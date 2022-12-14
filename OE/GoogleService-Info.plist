@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>744589931760-k36fri2hcbhipadbtqbsaaq06sqcb7b5.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.744589931760-k36fri2hcbhipadbtqbsaaq06sqcb7b5</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC1Gh5T9GL_Eq4PbnOI3lOSOcaA4jFqf7E</string>
+	<key>GCM_SENDER_ID</key>
+	<string>744589931760</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.Deok.OE</string>
+	<key>PROJECT_ID</key>
+	<string>ocr-test2-9b5be</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ocr-test2-9b5be.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:744589931760:ios:72dcb4f3193d24f66afe35</string>
+	<key>DATABASE_URL</key>
+	<string>https://ocr-test2-9b5be-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
