@@ -66,7 +66,7 @@ class ObjectVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
 //            sleep(5)
 
             let img = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-            self.imgView.image = img
+            self.imgView.image = UIImage(named: "detect.jpeg")
             // 이미지 뷰에 이미지 저장
             
             //이미지 파이어베이스 스토리지에 업로드
