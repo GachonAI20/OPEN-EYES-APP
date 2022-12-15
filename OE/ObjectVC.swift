@@ -62,11 +62,8 @@ class ObjectVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
     // 이미지 피커 성공 했을 때
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: false) { () in
-//            sleep(5)
-//            sleep(5)
-
             let img = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-            self.imgView.image = UIImage(named: "detect.jpeg")
+            self.imgView.image = img
             // 이미지 뷰에 이미지 저장
             
             //이미지 파이어베이스 스토리지에 업로드
@@ -91,12 +88,16 @@ class ObjectVC: UIViewController, UIImagePickerControllerDelegate, UINavigationC
                   // Uh-oh, an error occurred!
                   return
                 }
-                  self.req(image: downloadURL.path())
-                  print(downloadURL)
+                  
+                  //문제
+                  var image = "\(downloadURL)"
+//                  image = image.trimmingCharacters(in: ["\\"])
+                  self.req(image: image)
+                  print(downloadURL.absoluteString)
               }
             }
         }
-        convert()
+//        convert()
     }
     // 점자 앞글자로 이동
     @IBAction func forward(_ sender: Any) {
