@@ -94,6 +94,7 @@ class OCRVC: UIViewController, UIImagePickerControllerDelegate, UINavigationCont
                   //문제
                   var image = "\(downloadURL)"
 //                  image = image.trimmingCharacters(in: ["\\"])
+                  print("이미지URL 출력\(image)")
                   self.req(image: image)
                   print(downloadURL.absoluteString)
               }
