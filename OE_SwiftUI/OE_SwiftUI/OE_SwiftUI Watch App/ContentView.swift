@@ -12,17 +12,25 @@ import WatchKit
 
 struct ContentView: View {
     
+    /// 뷰모델 인스턴스 생성
     @ObservedObject var model = ViewModelWatch()
+    /// 받은 일반 문자열 저장
     @State var str: String = "기본"
+    // 크라운입력값 받는 변수
     @State private var crownValue = 0.0
-    @State var crownIndex: Int = 0
+    /// 현재 읽고있는 글자의 인덱스
+    @State var crownIdx: Int = 0
+    /// 마지막 크라운 입력값. 변화량 비교위해 필요
     @State var lastCrown = 0.0
-    @State var braille2DArr: [[Int]] = [[0,1,0,1,0,1]]
+    /// 변환한 이진 문자열
+    @State var brl2DArr: [[Int]] = [[0,1,0,1,0,1]]
+    /// 마지막으로 터치한 dot 정보
+    @State var lastTouch: Int = -1
 
 
     var body: some View {
         VStack{
-            Text("\(str)\(crownIndex): \(String(str[crownIndex]))")
+            Text("\(str)\(crownIdx): \(String(str[crownIdx]))")
             
             LazyVGrid(columns: [
                 GridItem(.fixed(50)), GridItem(.fixed(50))
@@ -36,9 +44,18 @@ struct ContentView: View {
                             
                             Text("\(index + 1)")
                                 .font(.largeTitle)
-                                .opacity(braille2DArr[crownIndex][5 - index] == 1 ? 1 : 0.4)
+                                .opacity(brl2DArr[crownIdx][5 - index] == 1 ? 1 : 0.4)
                                 .frame(width: width, height: height)
                                 .position(x: geo.frame(in: .local).midX, y: geo.frame(in: .local).midY)
+                                .gesture(DragGesture(minimumDistance: 0)
+                                    .onChanged({ value in
+                                        /// 터치 좌표
+                                        let loc: CGPoint = value.location
+                                        if isInside(loc, geo: geo) &&  brl2DArr[crownIdx][5 - index] == 1{
+                                            print(index + 1)
+                                        }
+                                    })
+                                )
                                 
                         }
                         .aspectRatio(1, contentMode: .fit)
@@ -47,17 +64,17 @@ struct ContentView: View {
             }
 
             
-
         }
-        // 변화를 감지할 변수이름에 $를 붙여 감시, 파라미터는 변화한 값
+        // 워치 통신 감지.  변화를 감지할 변수이름에 $를 붙여 감시, 파라미터는 변화한 값
         .onReceive(self.model.$messageText) { message in
             self.str = message
             print(message)
             if message != "" {
-                braille2DArr = convert(str: message)
-                print(braille2DArr)
+                brl2DArr = convert(str: message)
+                print(brl2DArr)
             }
         }
+        // 크라운 입력 받기
         // 뷰에 포커스를 설정할 수 있으며, Digital Crown 회전 이벤트가 발생할 때마다 이를 감지하고 처리한다.
         .focusable()
         // $crownValue 위치에 값 받을 변수 넣음
@@ -65,17 +82,17 @@ struct ContentView: View {
             // DigitalCrownEvent.offset 으로 크라운값 받기 가능
             if crownValue > lastCrown + 20 {
                 lastCrown = crownValue
-                if crownIndex < braille2DArr.count - 1 {
+                if crownIdx < brl2DArr.count - 1 {
                     //진동
-                    crownIndex += 1
+                    crownIdx += 1
                 }
 
             }
             else if crownValue <  lastCrown - 20 {
                 lastCrown = crownValue
-                if crownIndex > 0 {
+                if crownIdx > 0 {
                     //진동
-                    crownIndex -= 1
+                    crownIdx -= 1
                 }
             }
 //                crownIndex = Int(DigitalCrownEvent.offset)/10
@@ -154,7 +171,11 @@ struct ContentView: View {
         // 변환된 이진 숫자 2DArr을 반환
         return returnValue
     }
-    
+
+    func isInside(_ location: CGPoint, geo: GeometryProxy) -> Bool {
+        let frame = geo.frame(in: .local)
+        return frame.contains(location)
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
