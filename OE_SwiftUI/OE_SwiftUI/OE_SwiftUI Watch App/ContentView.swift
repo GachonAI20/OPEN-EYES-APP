@@ -29,16 +29,15 @@ struct ContentView: View {
 
 
     var body: some View {
-        VStack{
-            Text("\(str)\(crownIdx): \(String(str[crownIdx]))")
-            
-            LazyVGrid(columns: [
-                GridItem(.fixed(50)), GridItem(.fixed(50))
-            ], spacing: 10) {
-                ForEach(0..<3) { row in
-                    ForEach(0..<2) { col in
-                        let index = row + (col * 3)
-                        GeometryReader { geo in
+        GeometryReader { geo in
+            VStack{
+//                Text("\(str)\(crownIdx): \(String(str[crownIdx]))")
+                LazyVGrid(columns: [
+                    GridItem(.flexible()), GridItem(.flexible())
+                ], spacing: 0) {
+                    ForEach(0..<3) { row in
+                        ForEach(0..<2) { col in
+                            let index = row + (col * 3)
                             let width = geo.size.width / 2
                             let height = geo.size.height / 3
                             
@@ -46,19 +45,23 @@ struct ContentView: View {
                                 .font(.largeTitle)
                                 .opacity(brl2DArr[crownIdx][5 - index] == 1 ? 1 : 0.4)
                                 .frame(width: width, height: height)
-                                .position(x: geo.frame(in: .local).midX, y: geo.frame(in: .local).midY)
+//                                .position(x: geo.frame(in: .local).midX, y: geo.frame(in: .local).midY)
                                 .gesture(DragGesture(minimumDistance: 0)
                                     .onChanged({ value in
                                         /// 터치 좌표
                                         let loc: CGPoint = value.location
                                         if isInside(loc, geo: geo) &&  brl2DArr[crownIdx][5 - index] == 1{
-                                            print(index + 1)
+                                            print("\(index + 1) / 6")
                                         }
                                     })
+                                    //터치가 끝났을 때 lastTouch초기화 해서 같은 블록을 연속으로 클릭해도 진동하게 한다.
+                                    .onEnded { _ in
+                                        lastTouch = -1
+                                    }
                                 )
                                 
                         }
-                        .aspectRatio(1, contentMode: .fit)
+//                        .aspectRatio(1, contentMode: .fit)
                     }
                 }
             }
