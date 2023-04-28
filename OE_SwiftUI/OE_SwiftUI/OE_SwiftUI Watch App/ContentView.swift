@@ -9,7 +9,6 @@ import SwiftUI
 import WatchKit
 
 
-
 struct ContentView: View {
     
     /// 뷰모델 인스턴스 생성
@@ -45,27 +44,28 @@ struct ContentView: View {
                                 .font(.largeTitle)
                                 .opacity(brl2DArr[crownIdx][5 - idx] == 1 ? 1 : 0.4)
                                 .frame(width: width, height: height)
-//                                .position(x: geo.frame(in: .local).midX, y: geo.frame(in: .local).midY)
-                                
-                                
                         }
-//                        .aspectRatio(1, contentMode: .fit)
                     }
                 }
             }
+            // 뷰에 제스처 감지
             .gesture(DragGesture(minimumDistance: 0)
+                // 터치 좌표값이 변화했을 때 변화한 값을 파라미터로 받는 클로저
                 .onChanged({ value in
-                    /// 터치 좌표
+                    /// 터치 좌표 저장 변수
                     let loc: CGPoint = value.location
                     /// 터치 좌표를 통해 누른 셀의 인덱스 가져와서 저장
                     let touchedIdx = getIdx(loc, geo: geo)
+                    // 누른 인덱스에 해당하는 점자이진 배열값이 1이고, 손을 떼기 전 마지막 터치한 인덱스가 같지 않을 때 진동
                     if brl2DArr[crownIdx][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
                         print("\(touchedIdx + 1) / 6")
+                        // 진동 구현 부분
+                        SoundSetting.instance.playSound()
                     }
                     // lastTouch 업데이트
                     lastTouch = touchedIdx
                 })
-                //터치가 끝났을 때 lastTouch초기화 해서 같은 블록을 연속으로 클릭해도 진동하게 한다.
+                //터치가 끝났을 때 lastTouch초기화 해서 같은 블록을 연속으로 클릭해도 진동하게 함
                 .onEnded { _ in
                     lastTouch = -1
                 }
@@ -178,17 +178,7 @@ struct ContentView: View {
         return returnValue
     }
 
-    func isInside(_ location: CGPoint, index: Int, geo: GeometryProxy) -> Bool {
-        let cellWidth = geo.size.width / 2
-        let cellHeight = geo.size.height / 3
-        let col = index / 3
-        let row = index % 3
-        let x = CGFloat(col) * cellWidth
-        let y = CGFloat(row) * cellHeight
-        let frame = CGRect(x: x, y: y, width: cellWidth, height: cellHeight)
-        return frame.contains(location)
-    }
-    ///
+    /// 터치좌표값을 받아서 0~5 인덱스 반환
     func getIdx(_ location: CGPoint, geo: GeometryProxy) -> Int {
         let cellWidth = geo.size.width / 2
         let cellHeight = geo.size.height / 3
