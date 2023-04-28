@@ -10,17 +10,20 @@ import AVFoundation
 
 class SoundSetting: ObservableObject {
     
-    //1. soundSetting의 단일 인스턴스를 만듬
-    /// singleton ? :
-    /*싱글 톤은 한 번만 생성 된 다음 사용해야하는 모든 곳에서 공유해야하는 객체입니다 */
+
+    // 전역에서 하나의 객체를 사용하는 싱글톤 패턴
     static let instance = SoundSetting()
     
     var player: AVAudioPlayer?
     
     func playSound(){
+        // Bundle 클래스를 사용하여 파일 경로 참조, 이를 url 변수에 할당. 실패시 else
         guard let url = Bundle.main.url(forResource: "vibration", withExtension: "m4a") else {
             print("사운드 재생 오류")
-            return }
+            return
+        }
+        
+        // AVAudioPlayer 객체를 생성, contentsOf 메서드를 사용하여 url에 있는 파일 로드. 실패시 else
         do {
             player = try AVAudioPlayer(contentsOf: url)
             player?.play()

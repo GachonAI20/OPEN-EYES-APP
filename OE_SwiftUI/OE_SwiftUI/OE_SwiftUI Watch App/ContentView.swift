@@ -14,7 +14,7 @@ struct ContentView: View {
     /// 뷰모델 인스턴스 생성
     @ObservedObject var model = ViewModelWatch()
     /// 받은 일반 문자열 저장
-    @State var str: String = "기본"
+    @State var str: String = ""
     // 크라운입력값 받는 변수
     @State private var crownValue = 0.0
     /// 현재 읽고있는 글자의 인덱스
@@ -22,7 +22,7 @@ struct ContentView: View {
     /// 마지막 크라운 입력값. 변화량 비교위해 필요
     @State var lastCrown = 0.0
     /// 변환한 이진 문자열
-    @State var brl2DArr: [[Int]] = [[0,1,0,1,0,1]]
+    @State var brl2DArr: [[Int]] = [[0,0,0,0,0,0]]
     /// 마지막으로 터치한 dot 정보
     @State var lastTouch: Int = -1
 
