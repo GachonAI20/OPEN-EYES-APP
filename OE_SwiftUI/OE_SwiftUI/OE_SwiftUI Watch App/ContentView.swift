@@ -37,36 +37,39 @@ struct ContentView: View {
                 ], spacing: 0) {
                     ForEach(0..<3) { row in
                         ForEach(0..<2) { col in
-                            let index = row + (col * 3)
+                            let idx = row + (col * 3)
                             let width = geo.size.width / 2
                             let height = geo.size.height / 3
                             
-                            Text("\(index + 1)")
+                            Text("\(idx + 1)")
                                 .font(.largeTitle)
-                                .opacity(brl2DArr[crownIdx][5 - index] == 1 ? 1 : 0.4)
+                                .opacity(brl2DArr[crownIdx][5 - idx] == 1 ? 1 : 0.4)
                                 .frame(width: width, height: height)
 //                                .position(x: geo.frame(in: .local).midX, y: geo.frame(in: .local).midY)
-                                .gesture(DragGesture(minimumDistance: 0)
-                                    .onChanged({ value in
-                                        /// 터치 좌표
-                                        let loc: CGPoint = value.location
-                                        if isInside(loc, geo: geo) &&  brl2DArr[crownIdx][5 - index] == 1{
-                                            print("\(index + 1) / 6")
-                                        }
-                                    })
-                                    //터치가 끝났을 때 lastTouch초기화 해서 같은 블록을 연속으로 클릭해도 진동하게 한다.
-                                    .onEnded { _ in
-                                        lastTouch = -1
-                                    }
-                                )
+                                
                                 
                         }
 //                        .aspectRatio(1, contentMode: .fit)
                     }
                 }
             }
-
-            
+            .gesture(DragGesture(minimumDistance: 0)
+                .onChanged({ value in
+                    /// 터치 좌표
+                    let loc: CGPoint = value.location
+                    /// 터치 좌표를 통해 누른 셀의 인덱스 가져와서 저장
+                    let touchedIdx = getIdx(loc, geo: geo)
+                    if brl2DArr[crownIdx][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
+                        print("\(touchedIdx + 1) / 6")
+                    }
+                    // lastTouch 업데이트
+                    lastTouch = touchedIdx
+                })
+                //터치가 끝났을 때 lastTouch초기화 해서 같은 블록을 연속으로 클릭해도 진동하게 한다.
+                .onEnded { _ in
+                    lastTouch = -1
+                }
+            )
         }
         // 워치 통신 감지.  변화를 감지할 변수이름에 $를 붙여 감시, 파라미터는 변화한 값
         .onReceive(self.model.$messageText) { message in
@@ -175,10 +178,25 @@ struct ContentView: View {
         return returnValue
     }
 
-    func isInside(_ location: CGPoint, geo: GeometryProxy) -> Bool {
-        let frame = geo.frame(in: .local)
+    func isInside(_ location: CGPoint, index: Int, geo: GeometryProxy) -> Bool {
+        let cellWidth = geo.size.width / 2
+        let cellHeight = geo.size.height / 3
+        let col = index / 3
+        let row = index % 3
+        let x = CGFloat(col) * cellWidth
+        let y = CGFloat(row) * cellHeight
+        let frame = CGRect(x: x, y: y, width: cellWidth, height: cellHeight)
         return frame.contains(location)
     }
+    ///
+    func getIdx(_ location: CGPoint, geo: GeometryProxy) -> Int {
+        let cellWidth = geo.size.width / 2
+        let cellHeight = geo.size.height / 3
+        let col = Int(location.x / cellWidth)
+        let row = Int(location.y / cellHeight)
+        return row + col * 3
+    }
+
 }
 
 struct ContentView_Previews: PreviewProvider {
