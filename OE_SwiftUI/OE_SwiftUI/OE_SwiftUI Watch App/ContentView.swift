@@ -25,6 +25,8 @@ struct ContentView: View {
     @State var brl2DArr: [[Int]] = [[0,0,0,0,0,0]]
     /// 마지막으로 터치한 dot 정보
     @State var lastTouch: Int = -1
+    /// 터치한 dot 정보 저장하는 배열
+    @State var touchSet: Set<Int> = []
 
 
     var body: some View {
@@ -56,6 +58,7 @@ struct ContentView: View {
                     let loc: CGPoint = value.location
                     /// 터치 좌표를 통해 누른 셀의 인덱스 가져와서 저장
                     let touchedIdx = getIdx(loc, geo: geo)
+                    touchSet.insert(touchedIdx)
                     // 누른 인덱스에 해당하는 점자이진 배열값이 1이고, 손을 떼기 전 마지막 터치한 인덱스가 같지 않을 때 진동
                     if brl2DArr[crownIdx][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
                         print("\(touchedIdx + 1) / 6")
@@ -68,6 +71,11 @@ struct ContentView: View {
                 //터치가 끝났을 때 lastTouch초기화 해서 같은 블록을 연속으로 클릭해도 진동하게 함
                 .onEnded { _ in
                     lastTouch = -1
+                    // 한 글자를 다 읽었을 때 set 비우고 다음글자로 넘어감
+                    if touchSet.count == 6 {
+                        touchSet = []
+                        crownIdx += 1
+                    }
                 }
             )
         }
@@ -76,7 +84,7 @@ struct ContentView: View {
             self.str = message
             print(message)
             if message != "" {
-                brl2DArr = convert(str: message)
+                brl2DArr = convert(str: str)
                 print(brl2DArr)
             }
         }

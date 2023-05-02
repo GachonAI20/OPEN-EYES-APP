@@ -7,6 +7,8 @@
 
 import CoreML
 import SwiftUI
+import Vision
+
 
 struct ContentView: View {
     // ViewModelPhone 인스턴스를 생성
@@ -62,6 +64,7 @@ struct ContentView: View {
             Button(action: {
                 // 이미지 피커 불러오기
                 showingImagePicker = true
+                print("버튼 눌림")
             }) {
                 Image(systemName: "camera")
                     .resizable() // 크기 조정 가능하도록 resizable modifier 추가
@@ -98,15 +101,46 @@ struct ContentView: View {
         // .sheet를 .fullScreenCover로 변경
         // present 여부를 $showingImagePicker로 결정함
         // .sheet나 .fullScreenCover를 사용하면, 해당 뷰를 닫을 때 자동으로 isPresented와 연결된 변수 false로 설정
-        .fullScreenCover(isPresented: $showingImagePicker, onDismiss: loadImage) {
+        .fullScreenCover(isPresented: $showingImagePicker, onDismiss: loadML) {
             // 이미지 피커를 표시
             ImagePicker(image: $inputImage)
         }
     }
 
     /// 이미지가 선택되고, ImagePicker가 dismiss되면 실행되는 함수
-    func loadImage() {
+    func loadML() {
         // 이미지를 저장하거나 처리하려면 여기에서 수행
+        print("loadML")
+        if mode == 0 {
+            guard let inputImage = inputImage,
+                  let pixelBuffer = inputImage.toCVPixelBuffer() else {
+                        print("이미지 변환 실패")
+                        return
+                    }
+            do {
+                let config = MLModelConfiguration()
+                // 1. OCR_Test 모델 인스턴스 생성하기
+                let model = try OCR_Test(configuration: config)
+                print("모델 성공")
+                // 2. 입력 이미지를 사용하여 OCR_TestInput 인스턴스 생성하기
+                // 여기에서 image 변수는 CVPixelBuffer 형식의 이미지 데이터여야 합니다.
+                let input = OCR_TestInput(image: pixelBuffer)
+
+                // 3. 생성된 OCR_TestInput 인스턴스를 사용하여 예측 수행하기
+                let output = try model.prediction(input: input)
+                print("예측 실행")
+
+                // 4. 예측 결과를 OCR_TestOutput 인스턴스로 받아와서 원하는 출력값 확인하기
+                let classLabelProbs = output.classLabelProbs // 각 카테고리의 확률을 딕셔너리 형태로 얻기
+                let classLabel = output.classLabel // 가장 확률이 높은 카테고리 레이블 얻기
+
+                // 출력값 출력
+                print("Class Label Probs: \(classLabelProbs)")
+                print("Class Label: \(classLabel)")
+            } catch {
+                print("Error: \(error.localizedDescription)")
+            }
+        }
     }
 }
 
@@ -125,7 +159,10 @@ struct ImagePicker: UIViewControllerRepresentable {
 
     // UIViewControllerRepresentable을 채택한 뷰가 생성될 때 호출
     // UIImagePickerController를 생성하고 반환
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) ->
+    UIImagePickerController {
+        
+        print("makeUIViewController")
         let picker = UIImagePickerController()
         // delegate를
         picker.delegate = context.coordinator
@@ -147,9 +184,11 @@ struct ImagePicker: UIViewControllerRepresentable {
 
         // 이미지가 선택되면 호출되는 함수
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            print("사진 고름")
             if let uiImage = info[.originalImage] as? UIImage {
                 parent.image = uiImage
             }
+            print("화면 꺼짐")
             parent.presentationMode.wrappedValue.dismiss()
         }
     }
