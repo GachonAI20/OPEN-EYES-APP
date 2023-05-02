@@ -106,40 +106,77 @@ struct ContentView: View {
             ImagePicker(image: $inputImage)
         }
     }
+    func sendMessage(messageText: String){
+        self.model.session.sendMessage(["message": messageText], replyHandler: nil) { (error) in
+            print(error.localizedDescription)
+        }
+    }
 
     /// 이미지가 선택되고, ImagePicker가 dismiss되면 실행되는 함수
+//    func loadML() {
+//        // 이미지를 저장하거나 처리하려면 여기에서 수행
+//        print("loadML")
+//        if mode == 0 {
+//            guard let inputImage = inputImage,
+//                  let pixelBuffer = inputImage.toCVPixelBuffer() else {
+//                        print("이미지 변환 실패")
+//                        return
+//                    }
+//            do {
+//                let config = MLModelConfiguration()
+//                // 1. OCR_Test 모델 인스턴스 생성하기
+//                let model = try OCR_Test(configuration: config)
+//                print("모델 성공")
+//                // 2. 입력 이미지를 사용하여 OCR_TestInput 인스턴스 생성하기
+//                // 여기에서 image 변수는 CVPixelBuffer 형식의 이미지 데이터여야 합니다.
+//                let input = OCR_TestInput(image: pixelBuffer)
+//
+//                // 3. 생성된 OCR_TestInput 인스턴스를 사용하여 예측 수행하기
+//                let output = try model.prediction(input: input)
+//                print("예측 실행")
+//
+//                // 4. 예측 결과를 OCR_TestOutput 인스턴스로 받아와서 원하는 출력값 확인하기
+//                let classLabelProbs = output.classLabelProbs // 각 카테고리의 확률을 딕셔너리 형태로 얻기
+//                let classLabel = output.classLabel // 가장 확률이 높은 카테고리 레이블 얻기
+//
+//                // 출력값 출력
+//                print("Class Label Probs: \(classLabelProbs)")
+//                print("Class Label: \(classLabel)")
+//            } catch {
+//                print("Error: \(error.localizedDescription)")
+//            }
+//        }
+//    }
     func loadML() {
-        // 이미지를 저장하거나 처리하려면 여기에서 수행
-        print("loadML")
         if mode == 0 {
-            guard let inputImage = inputImage,
-                  let pixelBuffer = inputImage.toCVPixelBuffer() else {
-                        print("이미지 변환 실패")
-                        return
-                    }
-            do {
-                let config = MLModelConfiguration()
-                // 1. OCR_Test 모델 인스턴스 생성하기
-                let model = try OCR_Test(configuration: config)
-                print("모델 성공")
-                // 2. 입력 이미지를 사용하여 OCR_TestInput 인스턴스 생성하기
-                // 여기에서 image 변수는 CVPixelBuffer 형식의 이미지 데이터여야 합니다.
-                let input = OCR_TestInput(image: pixelBuffer)
-
-                // 3. 생성된 OCR_TestInput 인스턴스를 사용하여 예측 수행하기
-                let output = try model.prediction(input: input)
-                print("예측 실행")
-
-                // 4. 예측 결과를 OCR_TestOutput 인스턴스로 받아와서 원하는 출력값 확인하기
-                let classLabelProbs = output.classLabelProbs // 각 카테고리의 확률을 딕셔너리 형태로 얻기
-                let classLabel = output.classLabel // 가장 확률이 높은 카테고리 레이블 얻기
-
-                // 출력값 출력
-                print("Class Label Probs: \(classLabelProbs)")
-                print("Class Label: \(classLabel)")
-            } catch {
-                print("Error: \(error.localizedDescription)")
+            OCR()
+        }else {
+//            objDetect()
+        }
+    }
+    func OCR() {
+        let request = VNRecognizeTextRequest(completionHandler: { (request, error) in // VNRecognizeTextRequest를 생성합니다.
+            guard let observations = request.results as? [VNRecognizedTextObservation] else { return } // 결과값을 확인합니다.
+            
+            var recognizedText = ""
+            for observation in observations { // 결과값을 순회합니다.
+                guard let topCandidate = observation.topCandidates(1).first else { continue }
+                recognizedText += topCandidate.string + " " // 결과값을 recognizedText 변수에 추가합니다.
             }
+            
+            print(recognizedText) // recognizedText 변수를 출력합니다.
+            // 워치로 입력된 String 전송
+            sendMessage(messageText: recognizedText)
+        })
+        request.recognitionLevel = .accurate // 텍스트 인식 정확도를 설정합니다.
+        
+        guard let cgImage = inputImage?.cgImage else { return } // 이미지를 CGImage 형식으로 변환합니다.
+        let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:]) // VNImageRequestHandler를 생성합니다.
+        
+        do {
+            try requestHandler.perform([request]) // 이미지를 처리합니다.
+        } catch {
+            print(error) // 에러가 발생한 경우 출력합니다.
         }
     }
 }

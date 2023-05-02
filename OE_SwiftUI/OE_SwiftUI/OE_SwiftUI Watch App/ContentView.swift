@@ -44,7 +44,7 @@ struct ContentView: View {
                             
                             Text("\(idx + 1)")
                                 .font(.largeTitle)
-                                .opacity(brl2DArr[crownIdx][5 - idx] == 1 ? 1 : 0.4)
+                                .opacity(brl2DArr[crownIdx][5 - idx] == 1 ? 1 : 0.2)
                                 .frame(width: width, height: height)
                         }
                     }
@@ -71,10 +71,11 @@ struct ContentView: View {
                 //터치가 끝났을 때 lastTouch초기화 해서 같은 블록을 연속으로 클릭해도 진동하게 함
                 .onEnded { _ in
                     lastTouch = -1
-                    // 한 글자를 다 읽었을 때 set 비우고 다음글자로 넘어감
-                    if touchSet.count == 6 {
+                    // 한 글자를 다 읽었을 때 set 비우고 다음글자로 넘어감 오버플로우 해결
+                    if touchSet.count == 6  && crownIdx < brl2DArr.count - 1 {
                         touchSet = []
                         crownIdx += 1
+//                        SoundSetting.instance.playSound()
                     }
                 }
             )
@@ -82,10 +83,11 @@ struct ContentView: View {
         // 워치 통신 감지.  변화를 감지할 변수이름에 $를 붙여 감시, 파라미터는 변화한 값
         .onReceive(self.model.$messageText) { message in
             self.str = message
-            print(message)
+            print("폰으로 부터 받은 String: \(message)")
             if message != "" {
+                SoundSetting.instance.playSound()
                 brl2DArr = convert(str: str)
-                print(brl2DArr)
+                print("\n",brl2DArr)
             }
         }
         // 크라운 입력 받기
@@ -99,6 +101,7 @@ struct ContentView: View {
                 if crownIdx < brl2DArr.count - 1 {
                     //진동
                     crownIdx += 1
+                    SoundSetting.instance.playSound()
                 }
 
             }
@@ -172,6 +175,7 @@ struct ContentView: View {
         
         // 입력받은 문자열의 각 글자를 순회하면서 점자로 변환하고,
         // 점자를 이진 숫자 배열로 변환하여 반환할 배열에 추가
+        print("점자로 변환:")
         for i in 0..<str.count {
             // 입력받은 문자열에서 i번째 글자를 가져옴
             let char: Character = str.getChar(at: i)
@@ -192,7 +196,11 @@ struct ContentView: View {
         let cellHeight = geo.size.height / 3
         let col = Int(location.x / cellWidth)
         let row = Int(location.y / cellHeight)
-        return row + col * 3
+        // 오버플로우 막음
+        var returnValue: Int = row + col * 3
+        if returnValue < 0 { returnValue = 0 }
+        if returnValue > 5 { returnValue = 5 }
+        return returnValue
     }
 
 }
