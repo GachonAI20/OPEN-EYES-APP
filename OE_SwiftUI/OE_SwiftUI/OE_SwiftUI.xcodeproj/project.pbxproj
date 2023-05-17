@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A13197D2A146625005585B9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A13197C2A146625005585B9 /* GoogleService-Info.plist */; };
+		2A13197E2A146625005585B9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A13197C2A146625005585B9 /* GoogleService-Info.plist */; };
+		2A13199D2A14954F005585B9 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A13199C2A14954F005585B9 /* ImagePickerView.swift */; };
 		2A20F49529FC425200653E45 /* SoundSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A20F49429FC425200653E45 /* SoundSetting.swift */; };
 		2A20F49829FC475A00653E45 /* vibration.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2A20F49729FC475A00653E45 /* vibration.m4a */; };
 		2A20F49929FC475A00653E45 /* vibration.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2A20F49729FC475A00653E45 /* vibration.m4a */; };
@@ -53,6 +56,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2A13197C2A146625005585B9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2A13199C2A14954F005585B9 /* ImagePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		2A20F49429FC425200653E45 /* SoundSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSetting.swift; sourceTree = "<group>"; };
 		2A20F49729FC475A00653E45 /* vibration.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = vibration.m4a; sourceTree = "<group>"; };
 		2A37F53D29F9DB9000D1F9D9 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -110,6 +115,7 @@
 		2AC9D6F629F9720200453C94 = {
 			isa = PBXGroup;
 			children = (
+				2A13197C2A146625005585B9 /* GoogleService-Info.plist */,
 				2A20F49B29FC490A00653E45 /* Shared */,
 				2A20F49629FC473A00653E45 /* Resources */,
 				2AC9D70129F9720300453C94 /* OE_SwiftUI */,
@@ -130,6 +136,7 @@
 		2AC9D70129F9720300453C94 /* OE_SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				2A13199C2A14954F005585B9 /* ImagePickerView.swift */,
 				2AC9D70229F9720300453C94 /* OE_SwiftUIApp.swift */,
 				2A37F53D29F9DB9000D1F9D9 /* ContentView.swift */,
 				2A37F53F29F9DB9500D1F9D9 /* ViewModelPhone.swift */,
@@ -249,6 +256,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AC9D70A29F9720300453C94 /* Preview Assets.xcassets in Resources */,
+				2A13197D2A146625005585B9 /* GoogleService-Info.plist in Resources */,
 				2AC9D70729F9720300453C94 /* Assets.xcassets in Resources */,
 				2A20F49829FC475A00653E45 /* vibration.m4a in Resources */,
 			);
@@ -259,6 +267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AC9D71C29F9720400453C94 /* Preview Assets.xcassets in Resources */,
+				2A13197E2A146625005585B9 /* GoogleService-Info.plist in Resources */,
 				2AC9D71929F9720400453C94 /* Assets.xcassets in Resources */,
 				2A20F49929FC475A00653E45 /* vibration.m4a in Resources */,
 			);
@@ -275,6 +284,7 @@
 				2A20F49A29FC48B800653E45 /* SoundSetting.swift in Sources */,
 				2A77A8722A0017E300B5CAB4 /* Extentions.swift in Sources */,
 				2A37F54029F9DB9500D1F9D9 /* ViewModelPhone.swift in Sources */,
+				2A13199D2A14954F005585B9 /* ImagePickerView.swift in Sources */,
 				2A37F53E29F9DB9000D1F9D9 /* ContentView.swift in Sources */,
 				2AC9D70329F9720300453C94 /* OE_SwiftUIApp.swift in Sources */,
 			);
@@ -425,6 +435,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = OE_SwiftUI;
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라 퍼미션 요청";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "앨범퍼미션 요청";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.Deok.OE-SwiftUI";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -455,6 +467,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = OE_SwiftUI;
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라 퍼미션 요청";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "앨범퍼미션 요청";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.Deok.OE-SwiftUI";
 				LD_RUNPATH_SEARCH_PATHS = (

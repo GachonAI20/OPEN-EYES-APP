@@ -27,12 +27,14 @@ struct ContentView: View {
     @State var lastTouch: Int = -1
     /// 터치한 dot 정보 저장하는 배열
     @State var touchSet: Set<Int> = []
-
-
+    /// 크라운이 회전 여부 저장 변수
+    @State var isCrownRotated: Bool = false
+    
+    
     var body: some View {
         GeometryReader { geo in
             VStack{
-//                Text("\(str)\(crownIdx): \(String(str[crownIdx]))")
+                //                Text("\(str)\(crownIdx): \(String(str[crownIdx]))")
                 LazyVGrid(columns: [
                     GridItem(.flexible()), GridItem(.flexible())
                 ], spacing: 0) {
@@ -52,7 +54,7 @@ struct ContentView: View {
             }
             // 뷰에 제스처 감지
             .gesture(DragGesture(minimumDistance: 0)
-                // 터치 좌표값이 변화했을 때 변화한 값을 파라미터로 받는 클로저
+                     // 터치 좌표값이 변화했을 때 변화한 값을 파라미터로 받는 클로저
                 .onChanged({ value in
                     /// 터치 좌표 저장 변수
                     let loc: CGPoint = value.location
@@ -63,19 +65,20 @@ struct ContentView: View {
                     if brl2DArr[crownIdx][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
                         print("\(touchedIdx + 1) / 6")
                         // 진동 구현 부분
-                        SoundSetting.instance.playSound()
+                        playVibrate()
+                        //                        SoundSetting.instance.playSound()
                     }
                     // lastTouch 업데이트
                     lastTouch = touchedIdx
                 })
-                //터치가 끝났을 때 lastTouch초기화 해서 같은 블록을 연속으로 클릭해도 진동하게 함
+                     //터치가 끝났을 때 lastTouch초기화 해서 같은 블록을 연속으로 클릭해도 진동하게 함
                 .onEnded { _ in
                     lastTouch = -1
                     // 한 글자를 다 읽었을 때 set 비우고 다음글자로 넘어감 오버플로우 해결
                     if touchSet.count == 6  && crownIdx < brl2DArr.count - 1 {
                         touchSet = []
                         crownIdx += 1
-//                        SoundSetting.instance.playSound()
+                        //                        SoundSetting.instance.playSound()
                     }
                 }
             )
@@ -85,7 +88,9 @@ struct ContentView: View {
             self.str = message
             print("폰으로 부터 받은 String: \(message)")
             if message != "" {
-                SoundSetting.instance.playSound()
+                playVibrate()
+                
+                //                SoundSetting.instance.playSound()
                 brl2DArr = convert(str: str)
                 print("\n",brl2DArr)
             }
@@ -94,27 +99,42 @@ struct ContentView: View {
         // 뷰에 포커스를 설정할 수 있으며, Digital Crown 회전 이벤트가 발생할 때마다 이를 감지하고 처리한다.
         .focusable()
         // $crownValue 위치에 값 받을 변수 넣음
-        .digitalCrownRotation($crownValue) { DigitalCrownEvent in
+        .digitalCrownRotation($crownValue,
+                              onChange: { DigitalCrownEvent in
             // DigitalCrownEvent.offset 으로 크라운값 받기 가능
-            if crownValue > lastCrown + 20 {
-                lastCrown = crownValue
-                if crownIdx < brl2DArr.count - 1 {
-                    //진동
-                    crownIdx += 1
-                    SoundSetting.instance.playSound()
+            if isCrownRotated != true {
+                if crownValue > lastCrown + 20 {
+                    lastCrown = crownValue
+                    if crownIdx < brl2DArr.count - 1 {
+                        //진동
+                        playVibrate()
+                        crownIdx += 1
+                        // 크라운 돌아감 표시
+                        isCrownRotated = true
+                        //                    SoundSetting.instance.playSound()
+                    }
+                    
                 }
-
-            }
-            else if crownValue <  lastCrown - 20 {
-                lastCrown = crownValue
-                if crownIdx > 0 {
-                    //진동
-                    crownIdx -= 1
+                else if crownValue <  lastCrown - 10 {
+                    lastCrown = crownValue
+                    if crownIdx > 0 {
+                        //진동
+                        playVibrate()
+                        crownIdx -= 1
+                        // 크라운 돌아감 표시
+                        isCrownRotated = true
+                        
+                    }
                 }
             }
-//                crownIndex = Int(DigitalCrownEvent.offset)/10
-        }
+            // crownIndex = Int(DigitalCrownEvent.offset)/10
+        },
+                              onIdle: {
+            // Digital Crown이 idle 상태일 때 실행되는 코드
+            isCrownRotated = false
+        })
     }
+    
     /// 일반 String 받아서 점자 Int arr로 반환. 입력: "Hello", 출력: [[0,1,1,0,0,0],[0,0,0,1,1,0]]
     func convert(str string: String) -> [[Int]]{
         /// 소문자로 저장된 일반 String
@@ -123,20 +143,20 @@ struct ContentView: View {
         var returnValue: [[Int]] = []
         /// [글자: 점자] 딕셔너리
         let eng2Braille: [Character: Character] = [
-                "a": "⠁", "b": "⠃", "c": "⠉", "d": "⠙",
-                "e": "⠑", "f": "⠋", "g": "⠛", "h": "⠓",
-                "i": "⠊", "j": "⠚", "k": "⠅", "l": "⠇",
-                "m": "⠍", "n": "⠝", "o": "⠕", "p": "⠏",
-                "q": "⠟", "r": "⠗", "s": "⠎", "t": "⠞",
-                "u": "⠥", "v": "⠧", "w": "⠺", "x": "⠭",
-                "y": "⠽", "z": "⠵",
-                " ": "⠀", ".": "⠲", ",": "⠂",
-                "?": "⠦", "!": "⠖", ";": "⠆",
-                ":": "⠒", "-": "⠤", "/": "⠌",
-                "0": "⠴", "1": "⠂", "2": "⠆", "3": "⠒",
-                "4": "⠲", "5": "⠢", "6": "⠖", "7": "⠶",
-                "8": "⠦", "9": "⠔"
-            ]
+            "a": "⠁", "b": "⠃", "c": "⠉", "d": "⠙",
+            "e": "⠑", "f": "⠋", "g": "⠛", "h": "⠓",
+            "i": "⠊", "j": "⠚", "k": "⠅", "l": "⠇",
+            "m": "⠍", "n": "⠝", "o": "⠕", "p": "⠏",
+            "q": "⠟", "r": "⠗", "s": "⠎", "t": "⠞",
+            "u": "⠥", "v": "⠧", "w": "⠺", "x": "⠭",
+            "y": "⠽", "z": "⠵",
+            " ": "⠀", ".": "⠲", ",": "⠂",
+            "?": "⠦", "!": "⠖", ";": "⠆",
+            ":": "⠒", "-": "⠤", "/": "⠌",
+            "0": "⠴", "1": "⠂", "2": "⠆", "3": "⠒",
+            "4": "⠲", "5": "⠢", "6": "⠖", "7": "⠶",
+            "8": "⠦", "9": "⠔"
+        ]
         ///  [점자: 이진수] 딕셔너리
         let braille2IntArr: [Character: [Int]] = [
             "⠀": [0,0,0,0,0,0], "⠁": [0,0,0,0,0,1],
@@ -189,7 +209,7 @@ struct ContentView: View {
         // 변환된 이진 숫자 2DArr을 반환
         return returnValue
     }
-
+    
     /// 터치좌표값을 받아서 0~5 인덱스 반환
     func getIdx(_ location: CGPoint, geo: GeometryProxy) -> Int {
         let cellWidth = geo.size.width / 2
@@ -202,7 +222,12 @@ struct ContentView: View {
         if returnValue > 5 { returnValue = 5 }
         return returnValue
     }
-
+    func playVibrate() {
+        WKInterfaceDevice.current().play(.success)// 약하게 뚜둑
+        WKInterfaceDevice.current().play(.click)// 약하게 뚜둑
+        
+    }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -219,7 +244,7 @@ extension String {
         if 0 <= index && index < self.count  {
             return self[self.index(self.startIndex, offsetBy: index)]
         }
-       return Character(" ")
+        return Character(" ")
     }
     
     func getChar(at index: Int) -> Character {

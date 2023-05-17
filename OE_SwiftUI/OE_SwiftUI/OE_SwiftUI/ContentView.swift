@@ -8,6 +8,7 @@
 import CoreML
 import SwiftUI
 import Vision
+import AVFoundation
 
 
 struct ContentView: View {
@@ -26,6 +27,9 @@ struct ContentView: View {
     
     // messageText: 사용자가 입력할 메시지를 저장하는 문자열 변수
     @State var messageText = ""
+    /// 사진 가져오는 방법. .camera, .photoLibrary .
+    @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
+
     
     var body: some View {
         VStack{
@@ -103,9 +107,25 @@ struct ContentView: View {
         // .sheet나 .fullScreenCover를 사용하면, 해당 뷰를 닫을 때 자동으로 isPresented와 연결된 변수 false로 설정
         .fullScreenCover(isPresented: $showingImagePicker, onDismiss: loadML) {
             // 이미지 피커를 표시
-            ImagePicker(image: $inputImage)
+//            ImagePicker(image: $inputImage)
+            ImagePickerView(selectedImage: self.$selectedImage, sourceType: self.sourceType)
+
         }
+//        .onAppear {checkCameraPermission()}
+        
     }
+        
+    /// 카메라 권한 요청
+    func checkCameraPermission(){
+        AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+            if granted {
+                print("Camera: 권한 허용")
+            } else {
+                print("Camera: 권한 거부")
+            }
+        })
+    }
+    
     func sendMessage(messageText: String){
         self.model.session.sendMessage(["message": messageText], replyHandler: nil) { (error) in
             print(error.localizedDescription)
@@ -203,8 +223,8 @@ struct ImagePicker: UIViewControllerRepresentable {
         let picker = UIImagePickerController()
         // delegate를
         picker.delegate = context.coordinator
-        // picker.sourceType = .camera
-        picker.sourceType = .photoLibrary // 앨범에서 이미지를 선택하도록 설정
+        picker.sourceType = .camera
+//        picker.sourceType = .photoLibrary // 앨범에서 이미지를 선택하도록 설정
         return picker
     }
 
