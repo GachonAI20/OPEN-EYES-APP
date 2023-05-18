@@ -8,7 +8,6 @@
 import CoreML
 import SwiftUI
 import Vision
-import AVFoundation
 
 
 struct ContentView: View {
@@ -27,9 +26,6 @@ struct ContentView: View {
     
     // messageText: 사용자가 입력할 메시지를 저장하는 문자열 변수
     @State var messageText = ""
-    /// 사진 가져오는 방법. .camera, .photoLibrary .
-    @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
-
     
     var body: some View {
         VStack{
@@ -108,30 +104,48 @@ struct ContentView: View {
         .fullScreenCover(isPresented: $showingImagePicker, onDismiss: loadML) {
             // 이미지 피커를 표시
 //            ImagePicker(image: $inputImage)
-            ImagePickerView(selectedImage: self.$selectedImage, sourceType: self.sourceType)
-
+            ImagePickerView(selectedImage: self.$inputImage, sourceType: .camera)
         }
-//        .onAppear {checkCameraPermission()}
-        
     }
-        
-    /// 카메라 권한 요청
-    func checkCameraPermission(){
-        AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
-            if granted {
-                print("Camera: 권한 허용")
-            } else {
-                print("Camera: 권한 거부")
-            }
-        })
-    }
-    
     func sendMessage(messageText: String){
         self.model.session.sendMessage(["message": messageText], replyHandler: nil) { (error) in
             print(error.localizedDescription)
         }
     }
 
+
+    func loadML() {
+        if mode == 0 {
+            OCR()
+        }else {
+//            objDetect()
+        }
+    }
+    func OCR() {
+        let request = VNRecognizeTextRequest(completionHandler: { (request, error) in // VNRecognizeTextRequest를 생성합니다.
+            guard let observations = request.results as? [VNRecognizedTextObservation] else { return } // 결과값을 확인합니다.
+            
+            var recognizedText = ""
+            for observation in observations { // 결과값을 순회합니다.
+                guard let topCandidate = observation.topCandidates(1).first else { continue }
+                recognizedText += topCandidate.string + " " // 결과값을 recognizedText 변수에 추가합니다.
+            }
+            print("ocr 결과")
+            print(recognizedText) // recognizedText 변수를 출력합니다.
+            // 워치로 입력된 String 전송
+            sendMessage(messageText: recognizedText)
+        })
+        request.recognitionLevel = .accurate // 텍스트 인식 정확도를 설정합니다.
+        
+        guard let cgImage = inputImage?.cgImage else { return } // 이미지를 CGImage 형식으로 변환합니다.
+        let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:]) // VNImageRequestHandler를 생성합니다.
+        
+        do {
+            try requestHandler.perform([request]) // 이미지를 처리합니다.
+        } catch {
+            print(error) // 에러가 발생한 경우 출력합니다.
+        }
+    }
     /// 이미지가 선택되고, ImagePicker가 dismiss되면 실행되는 함수
 //    func loadML() {
 //        // 이미지를 저장하거나 처리하려면 여기에서 수행
@@ -167,38 +181,6 @@ struct ContentView: View {
 //            }
 //        }
 //    }
-    func loadML() {
-        if mode == 0 {
-            OCR()
-        }else {
-//            objDetect()
-        }
-    }
-    func OCR() {
-        let request = VNRecognizeTextRequest(completionHandler: { (request, error) in // VNRecognizeTextRequest를 생성합니다.
-            guard let observations = request.results as? [VNRecognizedTextObservation] else { return } // 결과값을 확인합니다.
-            
-            var recognizedText = ""
-            for observation in observations { // 결과값을 순회합니다.
-                guard let topCandidate = observation.topCandidates(1).first else { continue }
-                recognizedText += topCandidate.string + " " // 결과값을 recognizedText 변수에 추가합니다.
-            }
-            
-            print(recognizedText) // recognizedText 변수를 출력합니다.
-            // 워치로 입력된 String 전송
-            sendMessage(messageText: recognizedText)
-        })
-        request.recognitionLevel = .accurate // 텍스트 인식 정확도를 설정합니다.
-        
-        guard let cgImage = inputImage?.cgImage else { return } // 이미지를 CGImage 형식으로 변환합니다.
-        let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:]) // VNImageRequestHandler를 생성합니다.
-        
-        do {
-            try requestHandler.perform([request]) // 이미지를 처리합니다.
-        } catch {
-            print(error) // 에러가 발생한 경우 출력합니다.
-        }
-    }
 }
 
 struct ImagePicker: UIViewControllerRepresentable {
@@ -223,8 +205,8 @@ struct ImagePicker: UIViewControllerRepresentable {
         let picker = UIImagePickerController()
         // delegate를
         picker.delegate = context.coordinator
-        picker.sourceType = .camera
-//        picker.sourceType = .photoLibrary // 앨범에서 이미지를 선택하도록 설정
+        // picker.sourceType = .camera
+        picker.sourceType = .photoLibrary // 앨범에서 이미지를 선택하도록 설정
         return picker
     }
 

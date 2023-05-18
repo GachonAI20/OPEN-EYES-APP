@@ -435,8 +435,9 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = OE_SwiftUI;
-				INFOPLIST_KEY_NSCameraUsageDescription = "카메라 퍼미션 요청";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "앨범퍼미션 요청";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "camera permision";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "album permision";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.Deok.OE-SwiftUI";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -467,8 +468,9 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = OE_SwiftUI;
-				INFOPLIST_KEY_NSCameraUsageDescription = "카메라 퍼미션 요청";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "앨범퍼미션 요청";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "camera permision";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "album permision";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.Deok.OE-SwiftUI";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -501,6 +503,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = OE_SwiftUI;
+				INFOPLIST_KEY_NSCameraUsageDescription = "camera permission";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "album permission";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -534,6 +538,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = OE_SwiftUI;
+				INFOPLIST_KEY_NSCameraUsageDescription = "camera permission";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "album permission";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
