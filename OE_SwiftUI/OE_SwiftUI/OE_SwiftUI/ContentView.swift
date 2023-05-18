@@ -8,7 +8,8 @@
 import CoreML
 import SwiftUI
 import Vision
-
+import FirebaseStorage
+import Firebase
 
 struct ContentView: View {
     // ViewModelPhone 인스턴스를 생성
@@ -19,6 +20,9 @@ struct ContentView: View {
     @State private var showingImagePicker = false
     /// 선택한 이미지를 저장하는 State
     @State private var inputImage: UIImage?
+    /// 디바이스 id 저장하는 변수
+    @State private var uid: String = UIDevice.current.identifierForVendor?.uuidString ?? ""
+
 
     
     // reachable: 연결 상태를 나타내는 문자열 변수. 초기값은 "No"
@@ -134,6 +138,7 @@ struct ContentView: View {
             print(recognizedText) // recognizedText 변수를 출력합니다.
             // 워치로 입력된 String 전송
             sendMessage(messageText: recognizedText)
+            uploadImage()
         })
         request.recognitionLevel = .accurate // 텍스트 인식 정확도를 설정합니다.
         
@@ -146,6 +151,28 @@ struct ContentView: View {
             print(error) // 에러가 발생한 경우 출력합니다.
         }
     }
+    
+    func uploadImage() {
+        guard let image = inputImage else { return }
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else { return }
+        
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        
+        let uniqueFilename = UUID().uuidString + ".jpg" // 유니크한 파일 이름 생성
+        let imagePath = "Original/\(mode)/\(uid)/\(uniqueFilename)" // 이미지 파일 경로 구성
+        
+        let imageRef = storageRef.child(imagePath)
+        
+        imageRef.putData(imageData, metadata: nil) { (metadata, error) in
+            if let error = error {
+                print("이미지 업로드 실패: \(error.localizedDescription)")
+            } else {
+                print("이미지 업로드 성공!")
+            }
+        }
+    }
+
     /// 이미지가 선택되고, ImagePicker가 dismiss되면 실행되는 함수
 //    func loadML() {
 //        // 이미지를 저장하거나 처리하려면 여기에서 수행
