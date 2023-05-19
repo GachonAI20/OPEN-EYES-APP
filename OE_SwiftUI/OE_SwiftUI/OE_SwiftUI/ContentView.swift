@@ -15,7 +15,7 @@ struct ContentView: View {
     // ViewModelPhone 인스턴스를 생성
     var model = ViewModelPhone()
     /// 문서: 0, 물체: 1
-    @State private var mode = 0
+    @State private var mode = 1
     /// 이미지 피커를 보여줄지 여부를 결정하는 State
     @State private var showingImagePicker = false
     /// 선택한 이미지를 저장하는 State
@@ -41,9 +41,9 @@ struct ContentView: View {
             
             Picker(selection: $mode, label: Text("모드선택")) {
                 Text("문서 인식")
-                    .tag(0)
-                Text("물체 인식")
                     .tag(1)
+                Text("물체 인식")
+                    .tag(0)
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding([.leading, .trailing],40)
@@ -108,7 +108,7 @@ struct ContentView: View {
         .fullScreenCover(isPresented: $showingImagePicker, onDismiss: loadML) {
             // 이미지 피커를 표시
 //            ImagePicker(image: $inputImage)
-            ImagePickerView(selectedImage: self.$inputImage, sourceType: .camera)
+            ImagePickerView(selectedImage: self.$inputImage, sourceType: .photoLibrary)
         }
     }
     func sendMessage(messageText: String){
@@ -119,7 +119,7 @@ struct ContentView: View {
 
 
     func loadML() {
-        if mode == 0 {
+        if mode == 1 {
             OCR()
         }else {
 //            objDetect()
