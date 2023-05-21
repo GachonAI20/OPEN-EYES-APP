@@ -13,7 +13,7 @@ struct DotView: View {
 
 
     /// 받은 일반 문자열 저장
-    @State var str: String {
+     @Binding var str: String {
         didSet {
             brl2DArr = convert(str: str)
         }
@@ -28,57 +28,67 @@ struct DotView: View {
     @State var crownIdx: Int = 0
 
     var body: some View {
-        GeometryReader { geo in
-            VStack{
-                Text("\(str)\(crownIdx): \(String(str[crownIdx]))")
-                LazyVGrid(columns: [
-                    GridItem(.flexible()), GridItem(.flexible())
-                ], spacing: 0) {
-                    ForEach(0..<3) { row in
-                        ForEach(0..<2) { col in
-                            let idx = row + (col * 3)
-                            let width = geo.size.width / 2
-                            let height = geo.size.height / 3
-                            
-                            Text("\(idx + 1)")
-                                .font(.largeTitle)
-                                .opacity(brl2DArr[crownIdx][5 - idx] == 1 ? 1 : 0.2)
-                                .frame(width: width, height: height)
+        VStack{
+            GeometryReader { geo in
+                VStack{
+//                    Text("\(str)\(crownIdx): \(String(str[crownIdx]))")
+                    LazyVGrid(columns: [
+                        GridItem(.flexible()), GridItem(.flexible())
+                    ], spacing: 0) {
+                        ForEach(0..<3) { row in
+                            ForEach(0..<2) { col in
+                                let idx = row + (col * 3)
+                                let width = geo.size.width / 2
+                                let height = geo.size.height / 3
+                                
+                                Text("\(idx + 1)")
+                                    .font(.largeTitle)
+                                    .opacity(brl2DArr[crownIdx][5 - idx] == 1 ? 1 : 0.2)
+                                    .frame(width: width, height: height)
+                            }
                         }
                     }
                 }
+                // 뷰에 제스처 감지
+                .gesture(DragGesture(minimumDistance: 0)
+                         // 터치 좌표값이 변화했을 때 변화한 값을 파라미터로 받는 클로저
+                    .onChanged({ value in
+                        /// 터치 좌표 저장 변수
+                        let loc: CGPoint = value.location
+                        /// 터치 좌표를 통해 누른 셀의 인덱스 가져와서 저장
+                        let touchedIdx = getIdx(loc, geo: geo)
+                        touchSet.insert(touchedIdx)
+                        // 누른 인덱스에 해당하는 점자이진 배열값이 1이고, 손을 떼기 전 마지막 터치한 인덱스가 같지 않을 때 진동
+                        if brl2DArr[crownIdx][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
+                            print("\(touchedIdx + 1) / 6")
+                            // 진동 구현 부분
+                            playVibrate()
+                            //                        SoundSetting.instance.playSound()
+                        }
+                        // lastTouch 업데이트
+                        lastTouch = touchedIdx
+                    })
+                         //터치가 끝났을 때 lastTouch초기화 해서 같은 블록을 연속으로 클릭해도 진동하게 함
+                    .onEnded { _ in
+                        lastTouch = -1
+                        // 한 글자를 다 읽었을 때 set 비우고 다음글자로 넘어감 오버플로우 해결
+                        if touchSet.count == 6  && crownIdx < brl2DArr.count - 1 {
+                            touchSet = []
+                            crownIdx += 1
+                            //                        SoundSetting.instance.playSound()
+                        }
+                        print(brl2DArr)
+                    }
+                )
             }
-            // 뷰에 제스처 감지
-            .gesture(DragGesture(minimumDistance: 0)
-                     // 터치 좌표값이 변화했을 때 변화한 값을 파라미터로 받는 클로저
-                .onChanged({ value in
-                    /// 터치 좌표 저장 변수
-                    let loc: CGPoint = value.location
-                    /// 터치 좌표를 통해 누른 셀의 인덱스 가져와서 저장
-                    let touchedIdx = getIdx(loc, geo: geo)
-                    touchSet.insert(touchedIdx)
-                    // 누른 인덱스에 해당하는 점자이진 배열값이 1이고, 손을 떼기 전 마지막 터치한 인덱스가 같지 않을 때 진동
-                    if brl2DArr[crownIdx][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
-                        print("\(touchedIdx + 1) / 6")
-                        // 진동 구현 부분
-                        playVibrate()
-                        //                        SoundSetting.instance.playSound()
-                    }
-                    // lastTouch 업데이트
-                    lastTouch = touchedIdx
-                })
-                     //터치가 끝났을 때 lastTouch초기화 해서 같은 블록을 연속으로 클릭해도 진동하게 함
-                .onEnded { _ in
-                    lastTouch = -1
-                    // 한 글자를 다 읽었을 때 set 비우고 다음글자로 넘어감 오버플로우 해결
-                    if touchSet.count == 6  && crownIdx < brl2DArr.count - 1 {
-                        touchSet = []
-                        crownIdx += 1
-                        //                        SoundSetting.instance.playSound()
-                    }
-                }
-            )
         }
+            .onReceive(Just(str)) { newValue in
+                if str != ""{
+                    brl2DArr = convert(str: newValue)
+
+                }
+            }
+
     }
         
         /// 일반 String 받아서 점자 Int arr로 반환. 입력: "Hello", 출력: [[0,1,1,0,0,0],[0,0,0,1,1,0]]
@@ -156,7 +166,6 @@ struct DotView: View {
             return returnValue
         }
         
-    
     func getIdx(_ location: CGPoint, geo: GeometryProxy) -> Int {
         let cellWidth = geo.size.width / 2
         let cellHeight = geo.size.height / 3
@@ -174,8 +183,8 @@ struct DotView: View {
     }
 }
 
-struct DotView_Previews: PreviewProvider {
-    static var previews: some View {
-        DotView(str: "h")
-    }
-}
+//struct DotView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DotView(str: "")
+//    }
+//}

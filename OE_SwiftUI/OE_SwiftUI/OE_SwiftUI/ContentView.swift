@@ -45,8 +45,8 @@ struct ContentView: View {
                 Text("물체 인식")
                     .tag(0)
             }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding([.leading, .trailing],40)
+                .pickerStyle(SegmentedPickerStyle())
+                .padding([.leading, .trailing],40)
             Text(messageText)
             
 //            // 연결 상태를 표시
@@ -69,7 +69,7 @@ struct ContentView: View {
             Button(action: {
                 // 이미지 피커 불러오기
                 showingImagePicker = true
-                print("버튼 눌림")
+                print("이미지 피커 버튼 눌림")
             }) {
                 Image(uiImage: inputImage ?? UIImage(systemName: "camera")!)
                             .resizable()
@@ -80,7 +80,7 @@ struct ContentView: View {
             Spacer()
             HStack{
                 Spacer()
-                DotView(str: messageText)
+                DotView(str: $messageText)
                     .frame(width: 150, height: 200)
                     .padding()
             }

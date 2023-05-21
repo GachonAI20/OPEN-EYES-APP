@@ -3,4 +3,118 @@
    uuid = "ACED5EBF-F10B-4440-B614-CA4D27DD11D5"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D4D45629-447C-43AC-9012-9EDFCA8AB742"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "OE_SwiftUI/DotView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "D4D45629-447C-43AC-9012-9EDFCA8AB742 - ff8ad6093150a50d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OE_SwiftUI.DotView.body.getter : some"
+                  moduleName = "OE_SwiftUI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jeongdeok/git/OE/OE_SwiftUI/OE_SwiftUI/OE_SwiftUI/DotView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "31"
+                  endingLineNumber = "31"
+                  offsetFromSymbolStart = "196">
+               </Location>
+               <Location
+                  uuid = "D4D45629-447C-43AC-9012-9EDFCA8AB742 - ff8ad6093150a50d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OE_SwiftUI.DotView.body.getter : some"
+                  moduleName = "OE_SwiftUI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jeongdeok/git/OE/OE_SwiftUI/OE_SwiftUI/OE_SwiftUI/DotView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "31"
+                  endingLineNumber = "31"
+                  offsetFromSymbolStart = "180">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "74B16368-A53B-4EE4-A022-088C9F14C733"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "OE_SwiftUI/DotView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
+            landmarkName = "getIdx(_:geo:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "71137419-D1FD-44B5-BB3E-4EB5B81E8A25"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "OE_SwiftUI/DotView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
+            landmarkName = "getIdx(_:geo:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "71137419-D1FD-44B5-BB3E-4EB5B81E8A25 - e82ebd75b18f49af"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OE_SwiftUI.DotView.getIdx(_: __C.CGPoint, geo: SwiftUI.GeometryProxy) -&gt; Swift.Int"
+                  moduleName = "OE_SwiftUI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jeongdeok/git/OE/OE_SwiftUI/OE_SwiftUI/OE_SwiftUI/DotView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "170"
+                  endingLineNumber = "170"
+                  offsetFromSymbolStart = "404">
+               </Location>
+               <Location
+                  uuid = "71137419-D1FD-44B5-BB3E-4EB5B81E8A25 - e82ebd75b18f49af"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OE_SwiftUI.DotView.getIdx(_: __C.CGPoint, geo: SwiftUI.GeometryProxy) -&gt; Swift.Int"
+                  moduleName = "OE_SwiftUI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jeongdeok/git/OE/OE_SwiftUI/OE_SwiftUI/OE_SwiftUI/DotView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "170"
+                  endingLineNumber = "170"
+                  offsetFromSymbolStart = "160">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
