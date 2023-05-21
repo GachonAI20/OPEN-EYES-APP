@@ -70,37 +70,16 @@ struct ContentView: View {
                 showingImagePicker = true
                 print("버튼 눌림")
             }) {
-                Image(systemName: "camera")
-                    .resizable() // 크기 조정 가능하도록 resizable modifier 추가
-                    .scaledToFit() // 이미지 비율 유지
-                    .foregroundColor(.black) // 검은색 틴트 컬러 적용
-                    .frame(width: 150) // 크기 조정
-            }
-
-            if let inputImage = inputImage {
-                // 선택한 이미지가 있으면 화면에 표시
-                Image(uiImage: inputImage)
-                    .resizable()
-                    .scaledToFit()
-                    .padding(60)
-            }
-            else {
-                Spacer()
+                Image(uiImage: inputImage ?? UIImage(systemName: "camera")!)
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundColor(.black)
+                            .frame(width: 150, height: 150)
             }
             Spacer()
+            
+            Spacer()
 
-
-//            // 사용자가 메시지를 입력할 수 있는 텍스트 필드
-//            TextField("Input your message", text: $messageText)
-//
-//            // "Send Message" 버튼: 클릭 시 입력한 메시지를 Apple Watch로 전송
-//            Button(action: {
-//                self.model.session.sendMessage(["message": self.messageText], replyHandler: nil) { (error) in
-//                    print(error.localizedDescription)
-//                }
-//            }) {
-//                Text("Send Message")
-//            }
         }
         // .sheet를 .fullScreenCover로 변경
         // present 여부를 $showingImagePicker로 결정함
