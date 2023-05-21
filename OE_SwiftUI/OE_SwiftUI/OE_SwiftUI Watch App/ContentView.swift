@@ -18,7 +18,7 @@ struct ContentView: View {
     // 크라운입력값 받는 변수
     @State private var crownValue = 0.0
     /// 현재 읽고있는 글자의 인덱스
-    @State var crownIdx: Int = 0
+    @State var charIdx: Int = 0
     /// 마지막 크라운 입력값. 변화량 비교위해 필요
     @State var lastCrown = 0.0
     /// 변환한 이진 문자열
@@ -46,7 +46,7 @@ struct ContentView: View {
                             
                             Text("\(idx + 1)")
                                 .font(.largeTitle)
-                                .opacity(brl2DArr[crownIdx][5 - idx] == 1 ? 1 : 0.2)
+                                .opacity(brl2DArr[charIdx][5 - idx] == 1 ? 1 : 0.2)
                                 .frame(width: width, height: height)
                         }
                     }
@@ -62,7 +62,7 @@ struct ContentView: View {
                     let touchedIdx = getIdx(loc, geo: geo)
                     touchSet.insert(touchedIdx)
                     // 누른 인덱스에 해당하는 점자이진 배열값이 1이고, 손을 떼기 전 마지막 터치한 인덱스가 같지 않을 때 진동
-                    if brl2DArr[crownIdx][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
+                    if brl2DArr[charIdx][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
                         print("\(touchedIdx + 1) / 6")
                         // 진동 구현 부분
                         playVibrate()
@@ -75,9 +75,9 @@ struct ContentView: View {
                 .onEnded { _ in
                     lastTouch = -1
                     // 한 글자를 다 읽었을 때 set 비우고 다음글자로 넘어감 오버플로우 해결
-                    if touchSet.count == 6  && crownIdx < brl2DArr.count - 1 {
+                    if touchSet.count == 6  && charIdx < brl2DArr.count - 1 {
                         touchSet = []
-                        crownIdx += 1
+                        charIdx += 1
                         //                        SoundSetting.instance.playSound()
                     }
                 }
@@ -105,10 +105,10 @@ struct ContentView: View {
             if isCrownRotated != true {
                 if crownValue > lastCrown + 20 {
                     lastCrown = crownValue
-                    if crownIdx < brl2DArr.count - 1 {
+                    if charIdx < brl2DArr.count - 1 {
                         //진동
                         playVibrate()
-                        crownIdx += 1
+                        charIdx += 1
                         // 크라운 돌아감 표시
                         isCrownRotated = true
                         //                    SoundSetting.instance.playSound()
@@ -117,10 +117,10 @@ struct ContentView: View {
                 }
                 else if crownValue <  lastCrown - 10 {
                     lastCrown = crownValue
-                    if crownIdx > 0 {
+                    if charIdx > 0 {
                         //진동
                         playVibrate()
-                        crownIdx -= 1
+                        charIdx -= 1
                         // 크라운 돌아감 표시
                         isCrownRotated = true
                         
@@ -236,18 +236,3 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-
-// #################### extension ###################
-
-extension String {
-    subscript(_ index: Int) -> Character {
-        if 0 <= index && index < self.count  {
-            return self[self.index(self.startIndex, offsetBy: index)]
-        }
-        return Character(" ")
-    }
-    
-    func getChar(at index: Int) -> Character {
-        return self[self.index(self.startIndex, offsetBy: index)]
-    }
-}

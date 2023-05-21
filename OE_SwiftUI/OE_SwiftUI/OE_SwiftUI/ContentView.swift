@@ -47,6 +47,7 @@ struct ContentView: View {
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding([.leading, .trailing],40)
+            Text(messageText)
             
 //            // 연결 상태를 표시
 //            Text("Reachable \(reachable)")
@@ -77,7 +78,12 @@ struct ContentView: View {
                             .frame(width: 150, height: 150)
             }
             Spacer()
-            
+            HStack{
+                Spacer()
+                DotView(str: messageText)
+                    .frame(width: 150, height: 200)
+                    .padding()
+            }
             Spacer()
 
         }
@@ -91,6 +97,7 @@ struct ContentView: View {
         }
     }
     func sendMessage(messageText: String){
+        
         self.model.session.sendMessage(["message": messageText], replyHandler: nil) { (error) in
             print(error.localizedDescription)
         }
@@ -104,6 +111,7 @@ struct ContentView: View {
 //            objDetect()
         }
     }
+    /// 엣지 OCR
     func OCR() {
         let request = VNRecognizeTextRequest(completionHandler: { (request, error) in // VNRecognizeTextRequest를 생성합니다.
             guard let observations = request.results as? [VNRecognizedTextObservation] else { return } // 결과값을 확인합니다.
@@ -116,6 +124,7 @@ struct ContentView: View {
             print("ocr 결과")
             print(recognizedText) // recognizedText 변수를 출력합니다.
             // 워치로 입력된 String 전송
+            messageText = recognizedText
             sendMessage(messageText: recognizedText)
             uploadImage()
         })

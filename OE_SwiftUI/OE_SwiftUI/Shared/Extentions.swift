@@ -35,3 +35,17 @@ extension UIImage {
         return pixelBuffer
     }
 }
+
+
+extension String {
+    subscript(_ index: Int) -> Character {
+        if 0 <= index && index < self.count  {
+            return self[self.index(self.startIndex, offsetBy: index)]
+        }
+        return Character(" ")
+    }
+    
+    func getChar(at index: Int) -> Character {
+        return self[self.index(self.startIndex, offsetBy: index)]
+    }
+}
