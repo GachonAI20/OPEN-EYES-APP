@@ -78,12 +78,8 @@ struct ContentView: View {
                             .frame(width: 150, height: 150)
             }
             Spacer()
-            HStack{
-                Spacer()
-                DotView(str: $messageText)
-                    .frame(width: 150, height: 200)
-                    .padding()
-            }
+            DotView(str: $messageText)
+                .frame(height: 300)
             Spacer()
 
         }

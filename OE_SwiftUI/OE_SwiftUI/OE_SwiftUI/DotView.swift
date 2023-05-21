@@ -25,10 +25,43 @@ struct DotView: View {
     /// 터치한 dot 정보 저장하는 배열
     @State var touchSet: Set<Int> = []
     /// 현재 읽고있는 글자의 인덱스
-    @State var crownIdx: Int = 0
+    @State var charIdx: Int = 0
 
     var body: some View {
-        VStack{
+        HStack{
+            VStack{
+                Button {
+                    if charIdx < brl2DArr.count - 1 {
+                        //진동
+                        playVibrate()
+                        charIdx += 1
+                        //                    SoundSetting.instance.playSound()
+                    }
+                } label: {
+                    Image(systemName: "arrowshape.right.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .padding()
+                        .foregroundColor(.black)
+                        .frame(width: 150, height: 150)                }
+                Button {
+                    if charIdx > 0 {
+                        //진동
+                        playVibrate()
+                        charIdx -= 1
+                        //                    SoundSetting.instance.playSound()
+                    }
+                } label: {
+                    Image(systemName: "arrowshape.left.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .padding()
+                        .foregroundColor(.black)
+                        .frame(width: 150, height: 150)
+                }
+
+            }
+            Spacer()
             GeometryReader { geo in
                 VStack{
 //                    Text("\(str)\(crownIdx): \(String(str[crownIdx]))")
@@ -43,7 +76,7 @@ struct DotView: View {
                                 
                                 Text("\(idx + 1)")
                                     .font(.largeTitle)
-                                    .opacity(brl2DArr[crownIdx][5 - idx] == 1 ? 1 : 0.2)
+                                    .opacity(brl2DArr[charIdx][5 - idx] == 1 ? 1 : 0.2)
                                     .frame(width: width, height: height)
                             }
                         }
@@ -59,7 +92,7 @@ struct DotView: View {
                         let touchedIdx = getIdx(loc, geo: geo)
                         touchSet.insert(touchedIdx)
                         // 누른 인덱스에 해당하는 점자이진 배열값이 1이고, 손을 떼기 전 마지막 터치한 인덱스가 같지 않을 때 진동
-                        if brl2DArr[crownIdx][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
+                        if brl2DArr[charIdx][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
                             print("\(touchedIdx + 1) / 6")
                             // 진동 구현 부분
                             playVibrate()
@@ -72,9 +105,9 @@ struct DotView: View {
                     .onEnded { _ in
                         lastTouch = -1
                         // 한 글자를 다 읽었을 때 set 비우고 다음글자로 넘어감 오버플로우 해결
-                        if touchSet.count == 6  && crownIdx < brl2DArr.count - 1 {
+                        if touchSet.count == 6  && charIdx < brl2DArr.count - 1 {
                             touchSet = []
-                            crownIdx += 1
+                            charIdx += 1
                             //                        SoundSetting.instance.playSound()
                         }
                         print(brl2DArr)
@@ -184,7 +217,8 @@ struct DotView: View {
 }
 
 //struct DotView_Previews: PreviewProvider {
+//    @State var str = "hello"
 //    static var previews: some View {
-//        DotView(str: "")
+//        DotView(str: $str)
 //    }
 //}
