@@ -125,7 +125,9 @@ struct DotView: View {
     }
         
     /// 일반 String 받아서 점자 Int arr로 반환. 입력: "Hello", 출력: [[0,1,1,0,0,0],[0,0,0,1,1,0]]
+    /// 처음 str이 바인딩 될때, str값이 변경될 때 두 번 호출됨
     func convert(str string: String) -> [[Int]]{
+        print("convert")
         /// 소문자로 저장된 일반 String
         let str = string.lowercased()
         /// 반환할 배열, ["100011", "010010"]의 형식을 갖고있음
@@ -190,11 +192,12 @@ struct DotView: View {
             let char: Character = str.getChar(at: i)
             // i번째 글자에 해당하는 점자 문자를 딕셔너리에서 찾음 braille: "⠗"
             if let braille: Character = eng2Braille[char] {
-                print(braille, terminator: " ")
+                print(braille, terminator: "")
                 // 점자 문자에 해당하는 이진 숫자 배열을 반환할 배열에 추가
                 returnValue.append(braille2IntArr[braille]!)
             }
         }
+        print("")
         // 변환된 이진 숫자 2DArr을 반환
         return returnValue
     }
