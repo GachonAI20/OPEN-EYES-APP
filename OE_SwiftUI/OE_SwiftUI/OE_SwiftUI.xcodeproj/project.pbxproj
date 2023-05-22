@@ -31,6 +31,7 @@
 		2AC9D71529F9720300453C94 /* OE_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC9D71429F9720300453C94 /* OE_SwiftUIApp.swift */; };
 		2AC9D71929F9720400453C94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AC9D71829F9720400453C94 /* Assets.xcassets */; };
 		2AC9D71C29F9720400453C94 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AC9D71B29F9720400453C94 /* Preview Assets.xcassets */; };
+		2AE830F92A1B3B4A003975EB /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AE830F82A1B3B4A003975EB /* ImagePicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		2AC9D71429F9720300453C94 /* OE_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OE_SwiftUIApp.swift; sourceTree = "<group>"; };
 		2AC9D71829F9720400453C94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2AC9D71B29F9720400453C94 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		2AE830F82A1B3B4A003975EB /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,7 @@
 			children = (
 				2A13199C2A14954F005585B9 /* ImagePickerView.swift */,
 				2AC9D70229F9720300453C94 /* OE_SwiftUIApp.swift */,
+				2AE830F82A1B3B4A003975EB /* ImagePicker.swift */,
 				2A37F53D29F9DB9000D1F9D9 /* ContentView.swift */,
 				2A37F53F29F9DB9500D1F9D9 /* ViewModelPhone.swift */,
 				2A2DBA7F2A175F3F00F6C03B /* DotView.swift */,
@@ -294,6 +297,7 @@
 				2A77A83929FD45DC00B5CAB4 /* OCR-Test.mlmodel in Sources */,
 				2A20F49A29FC48B800653E45 /* SoundSetting.swift in Sources */,
 				2A2DBA802A175F3F00F6C03B /* DotView.swift in Sources */,
+				2AE830F92A1B3B4A003975EB /* ImagePicker.swift in Sources */,
 				2A77A8722A0017E300B5CAB4 /* Extentions.swift in Sources */,
 				2A37F54029F9DB9500D1F9D9 /* ViewModelPhone.swift in Sources */,
 				2A13199D2A14954F005585B9 /* ImagePickerView.swift in Sources */,
