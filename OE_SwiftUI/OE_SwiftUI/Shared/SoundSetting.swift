@@ -10,9 +10,7 @@ import AVFoundation
 
 class SoundSetting: ObservableObject {
     
-
-    // 전역에서 하나의 객체를 사용하는 싱글톤 패턴
-    static let instance = SoundSetting()
+    static let shared = SoundSetting()
     
     var player: AVAudioPlayer?
     
@@ -22,7 +20,6 @@ class SoundSetting: ObservableObject {
             print("사운드 재생 오류")
             return
         }
-        
         // AVAudioPlayer 객체를 생성, contentsOf 메서드를 사용하여 url에 있는 파일 로드. 실패시 else
         do {
             player = try AVAudioPlayer(contentsOf: url)
