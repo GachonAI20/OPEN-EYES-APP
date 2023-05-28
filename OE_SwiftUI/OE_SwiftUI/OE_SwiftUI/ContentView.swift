@@ -15,8 +15,8 @@ import Network
 struct ContentView: View {
     // ViewModelPhone 인스턴스를 생성
     var model = ViewModelPhone()
-    /// 문서: 0, 물체: 1
-    @State private var mode = 1
+    /// ML 모드 
+    @State private var mode = DetectMode.ocr
     /// 이미지 피커를 보여줄지 여부를 결정하는 State
     @State private var showingImagePicker = false
     /// 선택한 이미지를 저장하는 State
@@ -27,6 +27,10 @@ struct ContentView: View {
     @State private var isInternetConnected: Bool = false
     ///   ML결과 저장하는 변수
     @State var messageText = ""
+    // get 요청 결과 저장
+    @State var getReqError: String = ""
+    @State var getReqInfo: String = ""
+    @State var getReqSummary: String = ""
     
     var body: some View {
         VStack{
@@ -38,12 +42,13 @@ struct ContentView: View {
             
             Picker(selection: $mode, label: Text("모드선택")) {
                 Text("문서 인식")
-                    .tag(1)
+                    .tag(DetectMode.ocr)
                 Text("물체 인식")
-                    .tag(0)
+                    .tag(DetectMode.object)
             }
                 .pickerStyle(SegmentedPickerStyle())
                 .padding([.leading, .trailing],40)
+            
             Text(messageText)
             
             Spacer()
@@ -76,7 +81,7 @@ struct ContentView: View {
             ImagePickerView(selectedImage: self.$inputImage, sourceType: .photoLibrary)
         }
         .onAppear{
-            appearFunc()
+            show()
         }
     }
     
@@ -86,7 +91,7 @@ struct ContentView: View {
 
 // MARK: -  ContentView.onAppear
 extension ContentView {
-    func appearFunc(){
+    func show(){
         print("appearFunc")
         ///인터넷 연결 확인
         checkInternetConnectionOnce()
@@ -112,118 +117,148 @@ extension ContentView {
             // 상태 확인 후 모니터링 중지
             monitor.cancel()
         }
-
         monitor.start(queue: queue)
     }
 
 }
 
 // MARK: - 머신러닝
+
 extension ContentView {
-    ///
     func loadML() {
         print("loadML\n인터넷:\(isInternetConnected), 모드:\(mode)")
         // 인터넷 연결 되어있으면 서버ML 호출
         if isInternetConnected {
-            if mode == 0 {
-//                serverObjDetect()
-            }else if mode == 1 {
-//                servereOCR()
-            } else {
-                print("에러:\n 모드:\(mode)")
-                return
-            }
+            mode == .object ? serverObjDetect() : serverOCR()
+        } else {
+            mode == .object ? edgeObjDetect() : edgeOCR()
         }
-        else {
-            if mode == 0 {
-                edgeObjDetect()
-            }else if mode == 1 {
-                edgeOCR()
-            } else {
-                print("에러:\n 모드:\(mode)")
-                return
-            }
-        }
-
     }
+    
 // MARK: - 엣지ML
-
+    
     /// 엣지 물체인식
     func edgeObjDetect(){
         print("edgeObjDetect")
-
     }
     
     /// 엣지 OCR
     func edgeOCR() {
         print("edgeOCR")
+        
         // VNRecognizeTextRequest를 생성
         let request = VNRecognizeTextRequest(completionHandler: { (request, error) in
-            
             // 결과값 변수에 저장
             guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
-            
             /// 읽은 String 저장할 변수
             var recognizedText = ""
-            
             // 결과값 순회
             for observation in observations {
                 guard let topCandidate = observation.topCandidates(1).first else { continue }
                 recognizedText += topCandidate.string + " " // 결과값을 recognizedText 변수에 추가합니다.
             }
-            
             // recognizedText 변수를 출력합니다.
             print("ocr 결과: \(recognizedText)")
-            
             // 워치로 입력된 String 전송
             messageText = recognizedText
             sendMessage2Watch(messageText: messageText)
-
             // uploadImage2FB()// 오프라인 상태에서는 파이어베이스에 업로드 하지 않음
         })
-        
         // 텍스트 인식 정확도를 설정
         request.recognitionLevel = .accurate
-        
         // 이미지 CGImage 형식으로 변환
         guard let cgImage = inputImage?.cgImage else { return }
-        
         // VNImageRequestHandler를 생성
         let requestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-        
         do {
             try requestHandler.perform([request]) // 이미지를 처리합니다.
         } catch {
-            print(error) // 에러가 발생한 경우 출력합니다.
+            print(error)
         }
     }
     
-
 // MARK: - 서버ML
     
     /// 서버 물체인식
-    func serverObjDetect(){
+    func serverObjDetect() {
         print("serverObjDetect")
+        let path = uploadImage2FB()
+        print("경로: ",path)
+        getByPath(path: path)
     }
     
     /// 서버 문서인식
-    func serverOCR(){
+    func serverOCR() {
         print("serverOCR")
+        let path = uploadImage2FB()
+        print("경로: ",path)
+        getByPath(path: path)
+    }
+    
+    func getByPath(path: String) {
+        var urlComponents = URLComponents(string: "https://port-0-flask-test1-4c7jj2blhexg5l8.sel4.cloudtype.app/")
+        urlComponents?.queryItems = [URLQueryItem(name: "id", value: path)]
         
+        if let url = urlComponents?.url {
+            let request = URLRequest(url: url)
+            
+            let dataTask = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    print("HTTP GET 요청 실패. 에러: \(error.localizedDescription)")
+                    return
+                }
+                
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    print("유효하지 않은 HTTP 응답")
+                    return
+                }
+                
+                if (200..<300).contains(httpResponse.statusCode) {
+                    if let responseData = data {
+                        if let resultString = String(data: responseData, encoding: .utf8) {
+                            print("HTTP GET 요청 성공")
+                            print("상태 코드: \(httpResponse.statusCode)")
+                            print("응답 데이터: \(resultString)")
+                            
+                            // JSON 디코딩
+                            do {
+                                let decoder = JSONDecoder()
+                                let responseData = try decoder.decode(ResponseData.self, from: responseData)
+                                getReqError = responseData.error
+                                getReqInfo = responseData.info
+                                getReqSummary = responseData.summary
+                                messageText = getReqInfo
+                                
+                                // 사용할 데이터를 처리하거나 UI에 반영하는 로직 추가
+                                // 예: DispatchQueue.main.async { ... }
+                            } catch {
+                                print("JSON 디코딩 실패. Error: \(error)")
+                            }
+                        }
+                    }
+                } else {
+                    print("HTTP GET 요청 에러. 상태 코드: \(httpResponse.statusCode)")
+                }
+            }
+            dataTask.resume()
+        } else {
+            print("유효하지 않은 URL")
+        }
     }
 
+
     
-    /// 파이어 베이스로 업로드
-    func uploadImage2FB() {
+    /// 파이어 베이스로 업로드후 업로드 디렉토리 반환
+    func uploadImage2FB() -> String{
         print("uploadImage2FB")
-        guard let image = inputImage else { return }
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else { return }
+        guard let image = inputImage else { return ""}
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else { return ""}
         
         let storage = Storage.storage()
         let storageRef = storage.reference()
         
         let uniqueFilename = UUID().uuidString + ".jpg" // 유니크한 파일 이름 생성
-        let imagePath = "Original/\(mode)/\(uid)/\(uniqueFilename)" // 이미지 파일 경로 구성
+        let imagePath = "Original/\(mode.rawValue)/\(uid)/\(uniqueFilename)" // 이미지 파일 경로 구성
         
         let imageRef = storageRef.child(imagePath)
         
@@ -234,11 +269,13 @@ extension ContentView {
                 print("이미지 업로드 성공!")
             }
         }
+        
+        return imagePath
     }
-
 }
 
 // MARK: - 폰 - 워치간 통신
+
 extension ContentView {
     func sendMessage2Watch(messageText: String){
         print("sendMessage2Watch")

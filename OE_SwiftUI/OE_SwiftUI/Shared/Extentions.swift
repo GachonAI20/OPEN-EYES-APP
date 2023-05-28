@@ -36,7 +36,6 @@ extension UIImage {
     }
 }
 
-
 extension String {
     subscript(_ index: Int) -> Character {
         if 0 <= index && index < self.count  {
