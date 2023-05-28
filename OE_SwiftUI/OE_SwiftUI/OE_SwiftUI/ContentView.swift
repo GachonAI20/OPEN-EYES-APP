@@ -227,6 +227,7 @@ extension ContentView {
                                 getReqError = responseData.error
                                 getReqInfo = responseData.info
                                 getReqSummary = responseData.summary
+                                messageText = getReqInfo
                                 
                                 // 사용할 데이터를 처리하거나 UI에 반영하는 로직 추가
                                 // 예: DispatchQueue.main.async { ... }
