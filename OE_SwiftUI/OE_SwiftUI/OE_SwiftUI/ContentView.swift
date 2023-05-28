@@ -27,6 +27,10 @@ struct ContentView: View {
     @State private var isInternetConnected: Bool = false
     ///   ML결과 저장하는 변수
     @State var messageText = ""
+    // get 요청 결과 저장
+    @State var getReqError: String = ""
+    @State var getReqInfo: String = ""
+    @State var getReqSummary: String = ""
     
     var body: some View {
         VStack{
@@ -176,27 +180,84 @@ extension ContentView {
 // MARK: - 서버ML
     
     /// 서버 물체인식
-    func serverObjDetect(){
+    func serverObjDetect() {
         print("serverObjDetect")
+        let path = uploadImage2FB()
+        print("경로: ",path)
+        getByPath(path: path)
     }
     
     /// 서버 문서인식
-    func serverOCR(){
+    func serverOCR() {
         print("serverOCR")
-        
+        let path = uploadImage2FB()
+        print("경로: ",path)
+        getByPath(path: path)
     }
     
-    /// 파이어 베이스로 업로드
-    func uploadImage2FB() {
+    func getByPath(path: String) {
+        var urlComponents = URLComponents(string: "https://port-0-flask-test1-4c7jj2blhexg5l8.sel4.cloudtype.app/")
+        urlComponents?.queryItems = [URLQueryItem(name: "id", value: path)]
+        
+        if let url = urlComponents?.url {
+            let request = URLRequest(url: url)
+            
+            let dataTask = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    print("HTTP GET 요청 실패. 에러: \(error.localizedDescription)")
+                    return
+                }
+                
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    print("유효하지 않은 HTTP 응답")
+                    return
+                }
+                
+                if (200..<300).contains(httpResponse.statusCode) {
+                    if let responseData = data {
+                        if let resultString = String(data: responseData, encoding: .utf8) {
+                            print("HTTP GET 요청 성공")
+                            print("상태 코드: \(httpResponse.statusCode)")
+                            print("응답 데이터: \(resultString)")
+                            
+                            // JSON 디코딩
+                            do {
+                                let decoder = JSONDecoder()
+                                let responseData = try decoder.decode(ResponseData.self, from: responseData)
+                                getReqError = responseData.error
+                                getReqInfo = responseData.info
+                                getReqSummary = responseData.summary
+                                
+                                // 사용할 데이터를 처리하거나 UI에 반영하는 로직 추가
+                                // 예: DispatchQueue.main.async { ... }
+                            } catch {
+                                print("JSON 디코딩 실패. Error: \(error)")
+                            }
+                        }
+                    }
+                } else {
+                    print("HTTP GET 요청 에러. 상태 코드: \(httpResponse.statusCode)")
+                }
+            }
+            dataTask.resume()
+        } else {
+            print("유효하지 않은 URL")
+        }
+    }
+
+
+    
+    /// 파이어 베이스로 업로드후 업로드 디렉토리 반환
+    func uploadImage2FB() -> String{
         print("uploadImage2FB")
-        guard let image = inputImage else { return }
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else { return }
+        guard let image = inputImage else { return ""}
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else { return ""}
         
         let storage = Storage.storage()
         let storageRef = storage.reference()
         
         let uniqueFilename = UUID().uuidString + ".jpg" // 유니크한 파일 이름 생성
-        let imagePath = "Original/\(mode)/\(uid)/\(uniqueFilename)" // 이미지 파일 경로 구성
+        let imagePath = "Original/\(mode.rawValue)/\(uid)/\(uniqueFilename)" // 이미지 파일 경로 구성
         
         let imageRef = storageRef.child(imagePath)
         
@@ -207,6 +268,8 @@ extension ContentView {
                 print("이미지 업로드 성공!")
             }
         }
+        
+        return imagePath
     }
 }
 
