@@ -129,7 +129,9 @@ extension ContentView {
         print("loadML\n인터넷:\(isInternetConnected), 모드:\(mode)")
         // 인터넷 연결 되어있으면 서버ML 호출
         if isInternetConnected {
-            mode == .object ? serverObjDetect() : serverOCR()
+            let path = uploadImage2FB()
+            print("경로: ",path)
+            getByPath(path: path)
         } else {
             mode == .object ? edgeObjDetect() : edgeOCR()
         }
@@ -179,21 +181,19 @@ extension ContentView {
     
 // MARK: - 서버ML
     
-    /// 서버 물체인식
-    func serverObjDetect() {
-        print("serverObjDetect")
-        let path = uploadImage2FB()
-        print("경로: ",path)
-        getByPath(path: path)
-    }
-    
-    /// 서버 문서인식
-    func serverOCR() {
-        print("serverOCR")
-        let path = uploadImage2FB()
-        print("경로: ",path)
-        getByPath(path: path)
-    }
+//    /// 서버 물체인식
+//    func serverObjDetect() {
+//        print("serverObjDetect")
+//        getByPath(path: path)
+//    }
+//
+//    /// 서버 문서인식
+//    func serverOCR() {
+//        print("serverOCR")
+//        let path = uploadImage2FB()
+//        print("경로: ",path)
+//        getByPath(path: path)
+//    }
     
     func getByPath(path: String) {
         var urlComponents = URLComponents(string: "https://port-0-flask-test1-4c7jj2blhexg5l8.sel4.cloudtype.app/")
@@ -227,7 +227,7 @@ extension ContentView {
                                 getReqError = responseData.error
                                 getReqInfo = responseData.info
                                 getReqSummary = responseData.summary
-                                messageText = getReqInfo
+                                messageText = getReqSummary
                                 
                                 // 사용할 데이터를 처리하거나 UI에 반영하는 로직 추가
                                 // 예: DispatchQueue.main.async { ... }
@@ -266,7 +266,10 @@ extension ContentView {
             if let error = error {
                 print("이미지 업로드 실패: \(error.localizedDescription)")
             } else {
+                
                 print("이미지 업로드 성공!")
+                // 성공시에 get 요청
+                getByPath(path: imagePath)
             }
         }
         
