@@ -8,10 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2A13199D2A14954F005585B9 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A13199C2A14954F005585B9 /* ImagePickerView.swift */; };
-		2A20F49529FC425200653E45 /* SoundSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A20F49429FC425200653E45 /* SoundSetting.swift */; };
-		2A20F49829FC475A00653E45 /* vibration.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2A20F49729FC475A00653E45 /* vibration.m4a */; };
-		2A20F49929FC475A00653E45 /* vibration.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2A20F49729FC475A00653E45 /* vibration.m4a */; };
-		2A20F49A29FC48B800653E45 /* SoundSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A20F49429FC425200653E45 /* SoundSetting.swift */; };
 		2A2DBA802A175F3F00F6C03B /* DotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2DBA7F2A175F3F00F6C03B /* DotView.swift */; };
 		2A37F53E29F9DB9000D1F9D9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F53D29F9DB9000D1F9D9 /* ContentView.swift */; };
 		2A37F54029F9DB9500D1F9D9 /* ViewModelPhone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F53F29F9DB9500D1F9D9 /* ViewModelPhone.swift */; };
@@ -22,8 +18,6 @@
 		2A6AB9682A16210D00A67C5F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A6AB9672A16210D00A67C5F /* GoogleService-Info.plist */; };
 		2A6AB9692A16210D00A67C5F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A6AB9672A16210D00A67C5F /* GoogleService-Info.plist */; };
 		2A6AB96C2A16216000A67C5F /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 2A6AB96B2A16216000A67C5F /* FirebaseStorage */; };
-		2A77A83929FD45DC00B5CAB4 /* OCR-Test.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 2A77A83829FD45DC00B5CAB4 /* OCR-Test.mlmodel */; };
-		2A77A83A29FD45DC00B5CAB4 /* OCR-Test.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 2A77A83829FD45DC00B5CAB4 /* OCR-Test.mlmodel */; };
 		2A77A8722A0017E300B5CAB4 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A77A8712A0017E300B5CAB4 /* Extentions.swift */; };
 		2A77A8732A0017E300B5CAB4 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A77A8712A0017E300B5CAB4 /* Extentions.swift */; };
 		2AC9D70329F9720300453C94 /* OE_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC9D70229F9720300453C94 /* OE_SwiftUIApp.swift */; };
@@ -65,8 +59,6 @@
 
 /* Begin PBXFileReference section */
 		2A13199C2A14954F005585B9 /* ImagePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
-		2A20F49429FC425200653E45 /* SoundSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSetting.swift; sourceTree = "<group>"; };
-		2A20F49729FC475A00653E45 /* vibration.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = vibration.m4a; sourceTree = "<group>"; };
 		2A2DBA7F2A175F3F00F6C03B /* DotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotView.swift; sourceTree = "<group>"; };
 		2A37F53D29F9DB9000D1F9D9 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2A37F53F29F9DB9500D1F9D9 /* ViewModelPhone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelPhone.swift; sourceTree = "<group>"; };
@@ -74,7 +66,6 @@
 		2A37F54329F9DBA700D1F9D9 /* ViewModelWatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelWatch.swift; sourceTree = "<group>"; };
 		2A6644212A235DB30096E3F8 /* ResponseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseData.swift; sourceTree = "<group>"; };
 		2A6AB9672A16210D00A67C5F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		2A77A83829FD45DC00B5CAB4 /* OCR-Test.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = "OCR-Test.mlmodel"; sourceTree = "<group>"; };
 		2A77A8712A0017E300B5CAB4 /* Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
 		2AC9D6FF29F9720300453C94 /* OE_SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OE_SwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC9D70229F9720300453C94 /* OE_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OE_SwiftUIApp.swift; sourceTree = "<group>"; };
@@ -110,7 +101,6 @@
 		2A20F49629FC473A00653E45 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				2A20F49729FC475A00653E45 /* vibration.m4a */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -118,8 +108,6 @@
 		2A20F49B29FC490A00653E45 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				2A77A83829FD45DC00B5CAB4 /* OCR-Test.mlmodel */,
-				2A20F49429FC425200653E45 /* SoundSetting.swift */,
 				2A77A8712A0017E300B5CAB4 /* Extentions.swift */,
 				2A6644212A235DB30096E3F8 /* ResponseData.swift */,
 				2AE831342A1CE01E003975EB /* DetectMode.swift */,
@@ -281,7 +269,6 @@
 				2AC9D70A29F9720300453C94 /* Preview Assets.xcassets in Resources */,
 				2A6AB9682A16210D00A67C5F /* GoogleService-Info.plist in Resources */,
 				2AC9D70729F9720300453C94 /* Assets.xcassets in Resources */,
-				2A20F49829FC475A00653E45 /* vibration.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,7 +279,6 @@
 				2AC9D71C29F9720400453C94 /* Preview Assets.xcassets in Resources */,
 				2A6AB9692A16210D00A67C5F /* GoogleService-Info.plist in Resources */,
 				2AC9D71929F9720400453C94 /* Assets.xcassets in Resources */,
-				2A20F49929FC475A00653E45 /* vibration.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,8 +289,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A77A83929FD45DC00B5CAB4 /* OCR-Test.mlmodel in Sources */,
-				2A20F49A29FC48B800653E45 /* SoundSetting.swift in Sources */,
 				2A2DBA802A175F3F00F6C03B /* DotView.swift in Sources */,
 				2A77A8722A0017E300B5CAB4 /* Extentions.swift in Sources */,
 				2A6644222A235DB30096E3F8 /* ResponseData.swift in Sources */,
@@ -322,8 +306,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AE831362A1CE01E003975EB /* DetectMode.swift in Sources */,
-				2A77A83A29FD45DC00B5CAB4 /* OCR-Test.mlmodel in Sources */,
-				2A20F49529FC425200653E45 /* SoundSetting.swift in Sources */,
 				2A77A8732A0017E300B5CAB4 /* Extentions.swift in Sources */,
 				2A6644232A235DB30096E3F8 /* ResponseData.swift in Sources */,
 				2AC9D71529F9720300453C94 /* OE_SwiftUIApp.swift in Sources */,
@@ -538,9 +520,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -549,9 +530,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Deok.OE-SwiftUI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -573,9 +557,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -584,9 +567,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Deok.OE-SwiftUI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

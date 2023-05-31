@@ -47,8 +47,9 @@ struct ContentView: View {
                     .tag(DetectMode.object)
             }
                 .pickerStyle(SegmentedPickerStyle())
+                .foregroundColor(.black)
+                .background(Color.white)
                 .padding([.leading, .trailing],40)
-            
             Text(messageText)
             
             Spacer()
@@ -73,6 +74,8 @@ struct ContentView: View {
             Spacer()
 
         }
+        .background(Color.white) // Set the background color to white
+
         // .sheet를 .fullScreenCover로 변경
         // present 여부를 $showingImagePicker로 결정함
         // .sheet나 .fullScreenCover를 사용하면, 해당 뷰를 닫을 때 자동으로 isPresented와 연결된 변수 false로 설정
@@ -84,6 +87,7 @@ struct ContentView: View {
             show()
         }
     }
+
     
     
 

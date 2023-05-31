@@ -39,7 +39,7 @@ struct DotView: View {
                     Image(systemName: "arrowshape.right.fill")
                         .resizable()
                         .scaledToFit()
-                        .padding()
+                        .padding(30)
                         .foregroundColor(.black)
                         .frame(width: 150, height: 150)
                 }
@@ -53,7 +53,7 @@ struct DotView: View {
                     Image(systemName: "arrowshape.left.fill")
                         .resizable()
                         .scaledToFit()
-                        .padding()
+                        .padding(30)
                         .foregroundColor(.black)
                         .frame(width: 150, height: 150)
                 }
