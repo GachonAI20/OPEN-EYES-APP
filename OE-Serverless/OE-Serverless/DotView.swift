@@ -8,6 +8,7 @@
 import SwiftUI
 import UIKit
 import Combine
+
 struct DotView: View {
 
     @ObservedObject var counterManager = CounterManager.shared

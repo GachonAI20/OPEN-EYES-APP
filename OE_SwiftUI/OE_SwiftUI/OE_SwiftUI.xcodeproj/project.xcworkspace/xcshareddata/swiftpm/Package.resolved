@@ -64,6 +64,15 @@
       }
     },
     {
+      "identity" : "kortobraille",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Bridge-NOONGIL/KorToBraille.git",
+      "state" : {
+        "revision" : "e2da46268f5016efe5e7a0badeee642fe75d5af0",
+        "version" : "1.0.2"
+      }
+    },
+    {
       "identity" : "leveldb",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/leveldb.git",
