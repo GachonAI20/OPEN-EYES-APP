@@ -11,9 +11,14 @@ import Vision
 import FirebaseStorage
 import Firebase
 import Network
+import UIKit
+import Combine
+import AVFoundation
 
 struct ContentView: View {
     
+    /// 진동 구현 인스턴스
+    let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
     /// 워치 통신 매니저
     @ObservedObject var counterManager = CounterManager.shared
     /// ML 모드 
@@ -28,6 +33,8 @@ struct ContentView: View {
     @State private var isInternetConnected: Bool = false
     ///   ML결과 저장하는 변수
     @State var messageText = ""
+    /// tts 인스턴스
+    let speechSynthesizer = AVSpeechSynthesizer()
     // get 요청 결과 저장
     @State var getReqError: String = ""
     @State var getReqInfo: String = ""
@@ -37,12 +44,24 @@ struct ContentView: View {
         DragGesture()
             .onEnded { value in
                 if value.translation.width > 0 {
-                    // 오른쪽으로 스와이프됨
-                    mode = .object
+                    if mode == .ocr {
+                        mode = .object
+                        playVibrate()
+                    }
                 } else {
-                    // 왼쪽으로 스와이프됨
-                    mode = .ocr
+                    if mode == .object {
+                        mode = .ocr
+                        playVibrate()
+                    }
                 }
+            }
+    }
+    
+    var longPressGesture: some Gesture {
+        LongPressGesture()
+            .onEnded { _ in
+                // 실행될 함수 호출
+                playTTS()
             }
     }
     
@@ -66,58 +85,74 @@ struct ContentView: View {
             Color.white
                 .ignoresSafeArea()
             VStack{
-                Image("OpenEyes16_9")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 150)
-                    .padding([.top ,.bottom],10)
-                    .gesture(swipeGesture)
-                
-                Picker(selection: $mode, label: Text("모드선택")) {
-                    Text("문서 인식")
-                        .tag(DetectMode.ocr)
-                    Text("물체 인식")
-                        .tag(DetectMode.object)
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding([.leading, .trailing],40)
-                
-                Text(messageText)
-                
-                Spacer()
-
-                Button(action: {
-                    // 이미지 피커 불러오기
-                    showingImagePicker = true
-                    print("이미지 피커 버튼")
-                }) {
-                    if inputImage == nil{
-                        Image(uiImage: UIImage(systemName: "camera")!)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundColor(.black)
-                            .padding(20)
-                            .frame(width: 150, height: 150)
-                    } else {
-                        Image(uiImage: inputImage!)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundColor(.black)
-                            .frame(width: 150, height: 150)
-
+                VStack {
+                    ZStack {
+                        Color.white
+//                            .gesture(swipeGesture)
+                        VStack {
+                            Image("OpenEyes16_9")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 150)
+                                .padding([.top ,.bottom],10)
+                            
+                            
+                            Picker(selection: $mode, label: Text("모드선택")) {
+                                Text("문서 인식")
+                                    .tag(DetectMode.ocr)
+                                Text("물체 인식")
+                                    .tag(DetectMode.object)
+                            }
+                            .pickerStyle(SegmentedPickerStyle())
+                            .padding([.leading, .trailing],40)
+                            
+                            Text(messageText)
+                                .foregroundColor(.black)
+                            
+                            Spacer()
+                            
+                            // 이미지 피커 불러오기
+                            Button(action: {
+                                playVibrate()
+                                showingImagePicker = true
+                                print("이미지 피커 버튼")
+                            }) {
+                                if inputImage == nil{
+                                    Image(uiImage: UIImage(systemName: "camera")!)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .foregroundColor(.black)
+                                        .padding(20)
+                                        .frame(width: 150, height: 150)
+                                } else {
+                                    Image(uiImage: inputImage!)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .foregroundColor(.black)
+                                        .frame(width: 150, height: 150)
+                                    
+                                }
+                                
+                            }
+                            
+                            Spacer()
+                        }
+    //                    .gesture(swipeGesture)
                     }
-                    
                 }
-                
-                Spacer()
+                    .gesture(swipeGesture)
+                    .gesture(longPressGesture)
+
                 
                 DotView(str: $messageText)
-                    .frame(height: 300)
+                    .frame(height: 250)
                 
                 Spacer()
 
             }
-            .background(Color.white) // Set the background color to white
+            
+
+//            .background(Color.white) // Set the background color to white
 
             // .sheet를 .fullScreenCover로 변경
             // present 여부를 $showingImagePicker로 결정함
@@ -136,6 +171,8 @@ struct ContentView: View {
     
 
 }
+
+
 
 // MARK: -  ContentView.onAppear
 extension ContentView {
@@ -168,12 +205,8 @@ extension ContentView {
         monitor.start(queue: queue)
     }
 
-}
-
 // MARK: - 머신러닝
 
-extension ContentView {
-    
     func loadML() {
         print("loadML\n인터넷:\(isInternetConnected), 모드:\(mode)")
         // 인터넷 연결 되어있으면 서버ML 호출
@@ -213,6 +246,7 @@ extension ContentView {
             // 워치로 입력된 String 전송
             messageText = recognizedText + " "
             counterManager.sendMessage2Watch(messageText: messageText)
+            playVibrate()
         })
         // 텍스트 인식 정확도를 설정
         request.recognitionLevel = .accurate
@@ -277,6 +311,7 @@ extension ContentView {
                                 getReqSummary = responseData.summary
                                 messageText = getReqInfo + " "
                                 counterManager.sendMessage2Watch(messageText: messageText)
+                                playVibrate()
                                 // 사용할 데이터를 처리하거나 UI에 반영하는 로직 추가
                                 // 예: DispatchQueue.main.async { ... }
                             } catch {
@@ -322,6 +357,21 @@ extension ContentView {
         }
         
         return imagePath
+    }
+    
+    // MARK: - 유틸리티
+
+    func playVibrate() {
+        impactFeedbackGenerator.impactOccurred()
+    }
+    
+    func playTTS() {
+        print("playTTS")
+        let utterance = AVSpeechUtterance(string: messageText)
+        utterance.voice = AVSpeechSynthesisVoice(language: "ko-KR") // 음성 언어 설정 (예: 한국어)
+        utterance.rate = 0.6 // 읽는 속도 설정 (0.0 ~ 1.0 사이 값)
+
+        speechSynthesizer.speak(utterance)
     }
 }
 

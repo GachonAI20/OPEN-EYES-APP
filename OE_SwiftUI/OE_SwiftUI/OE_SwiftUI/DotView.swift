@@ -13,7 +13,7 @@ struct DotView: View {
     /// 워치 통신 매니저
     @ObservedObject var counterManager = CounterManager.shared
     
-    let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+    let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
 
     /// 받은 일반 문자열 저장
      @Binding var str: String {
@@ -43,9 +43,9 @@ struct DotView: View {
                     Image(systemName: "arrowshape.right.fill")
                         .resizable()
                         .scaledToFit()
-                        .padding(30)
+                        .padding([.leading, .trailing, .top], 15)
                         .foregroundColor(.black)
-                        .frame(width: 150, height: 150)
+                        .frame(width: 120, height: 120)
                 }
                 Button {
                     if counterManager.count > 0 {
@@ -56,11 +56,12 @@ struct DotView: View {
                     Image(systemName: "arrowshape.left.fill")
                         .resizable()
                         .scaledToFit()
-                        .padding(30)
+                        .padding([.leading, .trailing, .bottom],15)
                         .foregroundColor(.black)
-                        .frame(width: 150, height: 150)
+                        .frame(width: 120, height: 120)
                 }
             }
+            .padding([.trailing], 30)
             Spacer()
             GeometryReader { geo in
                 VStack{
@@ -100,7 +101,10 @@ struct DotView: View {
                     }
                 )
             }
+            .padding([.leading], 30)
+            
         }
+            .padding(30)
             .onReceive(Just(str)) { newValue in
                 if str != ""{
                     brl2DArr = BrailleManager.shared.convert(str: newValue)
