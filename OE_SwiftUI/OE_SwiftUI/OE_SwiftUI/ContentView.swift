@@ -129,10 +129,8 @@ struct ContentView: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .foregroundColor(.black)
-                                        .frame(width: 150, height: 150)
-                                    
+                                        .frame(width: 150, height: 150)   
                                 }
-                                
                             }
                             
                             Spacer()
