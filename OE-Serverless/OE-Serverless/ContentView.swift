@@ -10,8 +10,8 @@ import SwiftUI
 import Vision
 
 struct ContentView: View {
-    // ViewModelPhone 인스턴스를 생성
-    var model = ViewModelPhone()
+    /// 워치 통신 매니저
+    @ObservedObject var counterManager = CounterManager.shared
     /// ML 모드 
     @State private var mode = DetectMode.ocr
     /// 이미지 피커를 보여줄지 여부를 결정하는 State
@@ -114,7 +114,7 @@ extension ContentView {
             print("ocr 결과: \(recognizedText)")
             // 워치로 입력된 String 전송
             messageText = recognizedText
-            sendMessage2Watch(messageText: messageText)
+            counterManager.sendMessage2Watch(messageText: messageText)
             // uploadImage2FB()// 오프라인 상태에서는 파이어베이스에 업로드 하지 않음
         })
         // 텍스트 인식 정확도를 설정
@@ -127,17 +127,6 @@ extension ContentView {
             try requestHandler.perform([request]) // 이미지를 처리합니다.
         } catch {
             print(error)
-        }
-    }
-}
-
-// MARK: - 폰 - 워치간 통신
-
-extension ContentView {
-    func sendMessage2Watch(messageText: String){
-        print("sendMessage2Watch")
-        self.model.session.sendMessage(["message": messageText], replyHandler: nil) { (error) in
-            print(error.localizedDescription)
         }
     }
 }

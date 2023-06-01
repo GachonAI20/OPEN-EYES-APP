@@ -10,10 +10,8 @@ import WatchKit
 
 
 struct ContentView: View {
-    /// 카운트 매니저 인스턴스 생성
-    @StateObject var counter = CounterManager()
-    /// 뷰모델 인스턴스 생성
-    @ObservedObject var model = ViewModelWatch()
+
+    @ObservedObject var counterManager = CounterManager.shared
     /// 받은 일반 문자열 저장
     @State var str: String = ""
     // 크라운입력값 받는 변수
@@ -47,7 +45,7 @@ struct ContentView: View {
                             
                             Text("\(idx + 1)")
                                 .font(.largeTitle)
-                                .opacity(brl2DArr[counter.count][5 - idx] == 1 ? 1 : 0.2)
+                                .opacity(brl2DArr[counterManager.count][5 - idx] == 1 ? 1 : 0.2)
                                 .frame(width: width, height: height)
                         }
                     }
@@ -63,22 +61,20 @@ struct ContentView: View {
                 .onEnded { _ in
                     lastTouch = -1
                     // 한 글자를 다 읽었을 때 set 비우고 다음글자로 넘어감 오버플로우 해결
-                    if touchSet.count == 6  && counter.count < brl2DArr.count - 1 {
+                    if touchSet.count == 6  && counterManager.count < brl2DArr.count - 1 {
                         touchSet = []
-                        counter.increment()
+                        counterManager.increaseCount()
                         //                        SoundSetting.instance.playSound()
                     }
                 }
             )
         }
         // 워치 통신 감지.  변화를 감지할 변수이름에 $를 붙여 감시, 파라미터는 변화한 값
-        .onReceive(self.model.$messageText) { message in
+        .onReceive(counterManager.$message) { message in
             self.str = message
             print("폰으로 부터 받은 String: \(message)")
             if message != "" {
                 playVibrate()
-                
-                //                SoundSetting.instance.playSound()
                 brl2DArr = BrailleManager.shared.convert(str: str)
                 print("\n",brl2DArr)
             }
@@ -93,18 +89,18 @@ struct ContentView: View {
             if isCrownRotated != true {
                 if crownValue > lastCrown + 20 {
                     lastCrown = crownValue
-                    if counter.count < brl2DArr.count - 1 {
+                    if counterManager.count < brl2DArr.count - 1 {
                         playVibrate()
-                        counter.increment()
+                        counterManager.increaseCount()
                         // 크라운 돌아감 표시
                         isCrownRotated = true
                     }
                 }
                 else if crownValue <  lastCrown - 10 {
                     lastCrown = crownValue
-                    if counter.count > 0 {
+                    if counterManager.count > 0 {
                         playVibrate()
-                        counter.decrement()
+                        counterManager.decreaseCount()
                         // 크라운 돌아감 표시
                         isCrownRotated = true
                     }
@@ -125,7 +121,7 @@ struct ContentView: View {
         let touchedIdx = BrailleManager.shared.getIdx(loc, geo: geo)
         touchSet.insert(touchedIdx)
         // 누른 인덱스에 해당하는 점자이진 배열값이 1이고, 손을 떼기 전 마지막 터치한 인덱스가 같지 않을 때 진동
-        if brl2DArr[counter.count][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
+        if brl2DArr[counterManager.count][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
             print("\(touchedIdx + 1) / 6")
             // 진동 구현 부분
             playVibrate()

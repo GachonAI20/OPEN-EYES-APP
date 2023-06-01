@@ -9,8 +9,8 @@ import SwiftUI
 import UIKit
 import Combine
 struct DotView: View {
-    /// 카운터 객체
-    @StateObject var counter = CounterManager()
+
+    @ObservedObject var counterManager = CounterManager.shared
     /// 햅틱 발생객체
     let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
 
@@ -31,11 +31,11 @@ struct DotView: View {
     var body: some View {
         HStack{
             VStack{
-                Text("\(counter.count)")
+                Text("\(counterManager.count)")
                 Button {
-                    if counter.count < brl2DArr.count - 1 {
+                    if counterManager.count < brl2DArr.count - 1 {
                         playVibrate()
-                        counter.increment()
+                        counterManager.increaseCount()
                     }
                 } label: {
                     Image(systemName: "arrowshape.right.fill")
@@ -46,9 +46,9 @@ struct DotView: View {
                         .frame(width: 150, height: 150)
                 }
                 Button {
-                    if counter.count > 0 {
+                    if counterManager.count > 0 {
                         playVibrate()
-                        counter.decrement()
+                        counterManager.decreaseCount()
                     }
                 } label: {
                     Image(systemName: "arrowshape.left.fill")
@@ -75,7 +75,7 @@ struct DotView: View {
                                 Text("\(idx + 1)")
                                     .font(.largeTitle)
                                     .foregroundColor(.black)
-                                    .opacity(brl2DArr[counter.count][5 - idx] == 1 ? 1 : 0.2)
+                                    .opacity(brl2DArr[counterManager.count][5 - idx] == 1 ? 1 : 0.2)
                                     .frame(width: width, height: height)
                             }
                         }
@@ -90,9 +90,9 @@ struct DotView: View {
                     .onEnded { _ in
                         lastTouch = -1
                         // 한 글자를 다 읽었을 때 set 비우고 다음글자로 넘어감 오버플로우 해결
-                        if touchSet.count == 6  && counter.count < brl2DArr.count - 1 {
+                        if touchSet.count == 6  && counterManager.count < brl2DArr.count - 1 {
                             touchSet = []
-                            counter.increment()
+                            counterManager.increaseCount()
                         }
                         print(brl2DArr)
                     }
@@ -113,7 +113,7 @@ struct DotView: View {
         let touchedIdx = BrailleManager.shared.getIdx(loc, geo: geo)
         touchSet.insert(touchedIdx)
         // 누른 인덱스에 해당하는 점자이진 배열값이 1이고, 손을 떼기 전 마지막 터치한 인덱스가 같지 않을 때 진동
-        if brl2DArr[counter.count][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
+        if brl2DArr[counterManager.count][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
             print("\(touchedIdx + 1) / 6")
             // 진동 구현 부분
             playVibrate()
