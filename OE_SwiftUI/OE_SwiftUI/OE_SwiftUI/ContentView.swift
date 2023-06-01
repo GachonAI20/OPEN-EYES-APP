@@ -13,14 +13,15 @@ import Firebase
 import Network
 
 struct ContentView: View {
-    // ViewModelPhone 인스턴스를 생성
-    var model = ViewModelPhone()
+    
+    /// 워치 통신 매니저
+    @ObservedObject var counterManager = CounterManager.shared
     /// ML 모드 
     @State private var mode = DetectMode.ocr
     /// 이미지 피커를 보여줄지 여부를 결정하는 State
     @State private var showingImagePicker = false
     /// 선택한 이미지를 저장하는 State
-    @State private var inputImage: UIImage?
+    @State private var inputImage: UIImage? = nil
     /// 디바이스 id 저장하는 변수
     @State private var uid: String = UIDevice.current.identifierForVendor?.uuidString ?? ""
     /// 인터넷 연결 여부
@@ -32,58 +33,105 @@ struct ContentView: View {
     @State var getReqInfo: String = ""
     @State var getReqSummary: String = ""
     
-    var body: some View {
-        VStack{
-            Image("OpenEyes16_9")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 150)
-                .padding([.top ,.bottom],10)
-            
-            Picker(selection: $mode, label: Text("모드선택")) {
-                Text("문서 인식")
-                    .tag(DetectMode.ocr)
-                Text("물체 인식")
-                    .tag(DetectMode.object)
+    var swipeGesture: some Gesture {
+        DragGesture()
+            .onEnded { value in
+                if value.translation.width > 0 {
+                    // 오른쪽으로 스와이프됨
+                    mode = .object
+                } else {
+                    // 왼쪽으로 스와이프됨
+                    mode = .ocr
+                }
             }
+    }
+    
+    // 피커 색상 조정
+    init() {
+        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor.gray
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.white
+        ]
+        UISegmentedControl.appearance().setTitleTextAttributes(attributes, for: .selected)
+        
+        let normalAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.black
+        ]
+        UISegmentedControl.appearance().setTitleTextAttributes(normalAttributes, for: .normal)
+    }
+    
+    var body: some View {
+        ZStack {
+            Color.white
+                .ignoresSafeArea()
+            VStack{
+                Image("OpenEyes16_9")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 150)
+                    .padding([.top ,.bottom],10)
+                    .gesture(swipeGesture)
+                
+                Picker(selection: $mode, label: Text("모드선택")) {
+                    Text("문서 인식")
+                        .tag(DetectMode.ocr)
+                    Text("물체 인식")
+                        .tag(DetectMode.object)
+                }
                 .pickerStyle(SegmentedPickerStyle())
                 .padding([.leading, .trailing],40)
-            
-            Text(messageText)
-            
-            Spacer()
+                
+                Text(messageText)
+                
+                Spacer()
 
-            Button(action: {
-                // 이미지 피커 불러오기
-                showingImagePicker = true
-                print("이미지 피커 버튼")
-            }) {
-                Image(uiImage: inputImage ?? UIImage(systemName: "camera")!)
+                Button(action: {
+                    // 이미지 피커 불러오기
+                    showingImagePicker = true
+                    print("이미지 피커 버튼")
+                }) {
+                    if inputImage == nil{
+                        Image(uiImage: UIImage(systemName: "camera")!)
                             .resizable()
-                            .scaledToFit()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(.black)
+                            .padding(20)
+                            .frame(width: 150, height: 150)
+                    } else {
+                        Image(uiImage: inputImage!)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
                             .foregroundColor(.black)
                             .frame(width: 150, height: 150)
-            }
-            
-            Spacer()
-            
-            DotView(str: $messageText)
-                .frame(height: 300)
-            
-            Spacer()
 
+                    }
+                    
+                }
+                
+                Spacer()
+                
+                DotView(str: $messageText)
+                    .frame(height: 300)
+                
+                Spacer()
+
+            }
+            .background(Color.white) // Set the background color to white
+
+            // .sheet를 .fullScreenCover로 변경
+            // present 여부를 $showingImagePicker로 결정함
+            // .sheet나 .fullScreenCover를 사용하면, 해당 뷰를 닫을 때 자동으로 isPresented와 연결된 변수 false로 설정
+            .fullScreenCover(isPresented: $showingImagePicker, onDismiss: loadML) {
+                // 이미지 피커를 표시
+                ImagePickerView(selectedImage: self.$inputImage, sourceType: .photoLibrary)
+            }
+            .onAppear{
+                show()
         }
-        // .sheet를 .fullScreenCover로 변경
-        // present 여부를 $showingImagePicker로 결정함
-        // .sheet나 .fullScreenCover를 사용하면, 해당 뷰를 닫을 때 자동으로 isPresented와 연결된 변수 false로 설정
-        .fullScreenCover(isPresented: $showingImagePicker, onDismiss: loadML) {
-            // 이미지 피커를 표시
-            ImagePickerView(selectedImage: self.$inputImage, sourceType: .photoLibrary)
-        }
-        .onAppear{
-            show()
         }
     }
+
     
     
 
@@ -125,15 +173,16 @@ extension ContentView {
 // MARK: - 머신러닝
 
 extension ContentView {
+    
     func loadML() {
         print("loadML\n인터넷:\(isInternetConnected), 모드:\(mode)")
         // 인터넷 연결 되어있으면 서버ML 호출
         if isInternetConnected {
             let path = uploadImage2FB()
             print("경로: ",path)
-            getByPath(path: path)
         } else {
-            mode == .object ? edgeObjDetect() : edgeOCR()
+//            mode == .object ? edgeObjDetect() : edgeOCR()
+            edgeOCR()
         }
     }
     
@@ -162,9 +211,8 @@ extension ContentView {
             // recognizedText 변수를 출력합니다.
             print("ocr 결과: \(recognizedText)")
             // 워치로 입력된 String 전송
-            messageText = recognizedText
-            sendMessage2Watch(messageText: messageText)
-            // uploadImage2FB()// 오프라인 상태에서는 파이어베이스에 업로드 하지 않음
+            messageText = recognizedText + " "
+            counterManager.sendMessage2Watch(messageText: messageText)
         })
         // 텍스트 인식 정확도를 설정
         request.recognitionLevel = .accurate
@@ -227,8 +275,8 @@ extension ContentView {
                                 getReqError = responseData.error
                                 getReqInfo = responseData.info
                                 getReqSummary = responseData.summary
-                                messageText = getReqSummary
-                                
+                                messageText = getReqInfo + " "
+                                counterManager.sendMessage2Watch(messageText: messageText)
                                 // 사용할 데이터를 처리하거나 UI에 반영하는 로직 추가
                                 // 예: DispatchQueue.main.async { ... }
                             } catch {
@@ -274,17 +322,6 @@ extension ContentView {
         }
         
         return imagePath
-    }
-}
-
-// MARK: - 폰 - 워치간 통신
-
-extension ContentView {
-    func sendMessage2Watch(messageText: String){
-        print("sendMessage2Watch")
-        self.model.session.sendMessage(["message": messageText], replyHandler: nil) { (error) in
-            print(error.localizedDescription)
-        }
     }
 }
 

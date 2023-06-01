@@ -8,18 +8,17 @@
 import SwiftUI
 import UIKit
 import Combine
+
 struct DotView: View {
-    
-    /// 워치 통신 매니저
+
     @ObservedObject var counterManager = CounterManager.shared
-    
+    /// 햅틱 발생객체
     let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
 
     /// 받은 일반 문자열 저장
      @Binding var str: String {
         didSet {
             brl2DArr = BrailleManager.shared.convert(str: str)
-            counterManager.setCountZero()
         }
     }
     /// 변환한 이진 문자열
@@ -28,12 +27,11 @@ struct DotView: View {
     @State var lastTouch: Int = -1
     /// 터치한 dot 정보 저장하는 배열
     @State var touchSet: Set<Int> = []
+    
 
     var body: some View {
         HStack{
             VStack{
-//                Text("\(counterManager.count)")
-//                    .foregroundColor(.black)
                 Button {
                     if counterManager.count < brl2DArr.count - 1 {
                         playVibrate()
@@ -107,7 +105,6 @@ struct DotView: View {
                 }
             }
     }
-    
     /// 터치한 뷰갸 1일 경우, 진동
     func vibrateOnTouch(value: DragGesture.Value, geo: GeometryProxy) {
         /// 터치 좌표 저장 변수
@@ -120,7 +117,9 @@ struct DotView: View {
             print("\(touchedIdx + 1) / 6")
             // 진동 구현 부분
             playVibrate()
+            // SoundSetting.instance.playSound()
         }
+        // lastTouch 업데이트
         lastTouch = touchedIdx
     }
 

@@ -10,13 +10,14 @@ import WatchKit
 
 
 struct ContentView: View {
-    
-    /// 워치 통신 매니저
+
     @ObservedObject var counterManager = CounterManager.shared
     /// 받은 일반 문자열 저장
     @State var str: String = ""
     // 크라운입력값 받는 변수
     @State private var crownValue = 0.0
+    /// 현재 읽고있는 글자의 인덱스
+//    @State var charIdx: Int = 0
     /// 마지막 크라운 입력값. 변화량 비교위해 필요
     @State var lastCrown = 0.0
     /// 변환한 이진 문자열
@@ -86,7 +87,7 @@ struct ContentView: View {
                               onChange: { DigitalCrownEvent in
             // DigitalCrownEvent.offset 으로 크라운값 받기 가능
             if isCrownRotated != true {
-                if crownValue > lastCrown {
+                if crownValue > lastCrown + 20 {
                     lastCrown = crownValue
                     if counterManager.count < brl2DArr.count - 1 {
                         playVibrate()
@@ -95,7 +96,7 @@ struct ContentView: View {
                         isCrownRotated = true
                     }
                 }
-                else if crownValue <  lastCrown {
+                else if crownValue <  lastCrown - 10 {
                     lastCrown = crownValue
                     if counterManager.count > 0 {
                         playVibrate()
@@ -132,8 +133,7 @@ struct ContentView: View {
     
     func playVibrate() {
 //        WKInterfaceDevice.current().play(.success)// 약하게 뚜둑
-//        WKInterfaceDevice.current().play(.click)// 아주 약하게 뚝
-        WKInterfaceDevice.current().play(.start)// 약하게 뚝
+        WKInterfaceDevice.current().play(.click)// 약하게 뚜둑
     }
 }
 
