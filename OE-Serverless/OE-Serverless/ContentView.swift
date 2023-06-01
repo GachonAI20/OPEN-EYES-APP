@@ -60,7 +60,7 @@ struct ContentView: View {
         // .sheet나 .fullScreenCover를 사용하면, 해당 뷰를 닫을 때 자동으로 isPresented와 연결된 변수 false로 설정
         .fullScreenCover(isPresented: $showingImagePicker, onDismiss: loadML) {
             // 이미지 피커를 표시
-            ImagePickerView(selectedImage: self.$inputImage, sourceType: .camera)
+            ImagePickerView(selectedImage: self.$inputImage, sourceType: .photoLibrary)
         }
         .onAppear{
             show()
