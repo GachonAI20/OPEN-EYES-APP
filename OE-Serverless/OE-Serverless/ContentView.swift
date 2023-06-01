@@ -17,11 +17,11 @@ struct ContentView: View {
     /// 이미지 피커를 보여줄지 여부를 결정하는 State
     @State private var showingImagePicker = false
     /// 선택한 이미지를 저장하는 State
-    @State private var inputImage: UIImage?
+    @State private var inputImage: UIImage? = nil
     ///   ML결과 저장하는 변수
     @State var messageText = ""
 
-    
+
     var body: some View {
         VStack{
             Image("OpenEyes16_9")
@@ -39,11 +39,21 @@ struct ContentView: View {
                 showingImagePicker = true
                 print("이미지 피커 버튼")
             }) {
-                Image(uiImage: inputImage ?? UIImage(systemName: "camera")!)
-                            .resizable()
-                            .scaledToFit()
-                            .foregroundColor(.black)
-                            .frame(width: 150, height: 150)
+                if inputImage == nil{
+                    Image(uiImage: UIImage(systemName: "camera")!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundColor(.black)
+                        .padding(20)
+                        .frame(width: 150, height: 150)
+                } else {
+                    Image(uiImage: inputImage!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundColor(.black)
+                        .frame(width: 150, height: 150)
+
+                }
             }
             
             Spacer()
@@ -60,7 +70,8 @@ struct ContentView: View {
         // .sheet나 .fullScreenCover를 사용하면, 해당 뷰를 닫을 때 자동으로 isPresented와 연결된 변수 false로 설정
         .fullScreenCover(isPresented: $showingImagePicker, onDismiss: loadML) {
             // 이미지 피커를 표시
-            ImagePickerView(selectedImage: self.$inputImage, sourceType: .photoLibrary)
+            ImagePickerView(selectedImage: self.$inputImage, sourceType: .camera)
+                .edgesIgnoringSafeArea(.all)
         }
         .onAppear{
             show()

@@ -32,7 +32,6 @@ struct DotView: View {
     var body: some View {
         HStack{
             VStack{
-                Text("\(counterManager.count)")
                 Button {
                     if counterManager.count < brl2DArr.count - 1 {
                         playVibrate()
