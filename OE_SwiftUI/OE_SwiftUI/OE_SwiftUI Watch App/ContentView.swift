@@ -86,7 +86,7 @@ struct ContentView: View {
                               onChange: { DigitalCrownEvent in
             // DigitalCrownEvent.offset 으로 크라운값 받기 가능
             if isCrownRotated != true {
-                if crownValue > lastCrown + 20 {
+                if crownValue > lastCrown {
                     lastCrown = crownValue
                     if counterManager.count < brl2DArr.count - 1 {
                         playVibrate()
@@ -95,7 +95,7 @@ struct ContentView: View {
                         isCrownRotated = true
                     }
                 }
-                else if crownValue <  lastCrown - 10 {
+                else if crownValue <  lastCrown {
                     lastCrown = crownValue
                     if counterManager.count > 0 {
                         playVibrate()
@@ -132,7 +132,8 @@ struct ContentView: View {
     
     func playVibrate() {
 //        WKInterfaceDevice.current().play(.success)// 약하게 뚜둑
-        WKInterfaceDevice.current().play(.click)// 약하게 뚜둑
+//        WKInterfaceDevice.current().play(.click)// 아주 약하게 뚝
+        WKInterfaceDevice.current().play(.start)// 약하게 뚝
     }
 }
 

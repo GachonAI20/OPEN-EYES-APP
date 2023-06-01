@@ -19,6 +19,7 @@ struct DotView: View {
      @Binding var str: String {
         didSet {
             brl2DArr = BrailleManager.shared.convert(str: str)
+            counterManager.setCountZero()
         }
     }
     /// 변환한 이진 문자열

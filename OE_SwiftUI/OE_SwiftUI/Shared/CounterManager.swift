@@ -45,6 +45,13 @@ final class CounterManager: ObservableObject {
         }
     }
     
+    func setCountZero() {
+        count  = 0
+        session.sendMessage(["count": count], replyHandler: nil) { error in
+            print(error.localizedDescription)
+        }
+    }
+    
     func sendMessage2Watch(messageText: String) {
         session.sendMessage(["message": messageText], replyHandler: nil) { error in
             print(error.localizedDescription)
