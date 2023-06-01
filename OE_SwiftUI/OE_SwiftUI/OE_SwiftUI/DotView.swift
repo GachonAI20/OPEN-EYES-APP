@@ -9,6 +9,10 @@ import SwiftUI
 import UIKit
 import Combine
 struct DotView: View {
+    
+    /// 워치 통신 매니저
+    @ObservedObject var counterManager = CounterManager.shared
+    
     let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
 
     /// 받은 일반 문자열 저장
@@ -23,37 +27,34 @@ struct DotView: View {
     @State var lastTouch: Int = -1
     /// 터치한 dot 정보 저장하는 배열
     @State var touchSet: Set<Int> = []
-    /// 현재 읽고있는 글자의 인덱스
-    @State var charIdx: Int = 0
 
     var body: some View {
         HStack{
             VStack{
+                Text("\(counterManager.count)")
                 Button {
-                    if charIdx < brl2DArr.count - 1 {
+                    if counterManager.count < brl2DArr.count - 1 {
                         playVibrate()
-                        charIdx += 1
-                        // SoundSetting.instance.playSound()
+                        counterManager.increaseCount()
                     }
                 } label: {
                     Image(systemName: "arrowshape.right.fill")
                         .resizable()
                         .scaledToFit()
-                        .padding()
+                        .padding(30)
                         .foregroundColor(.black)
                         .frame(width: 150, height: 150)
                 }
                 Button {
-                    if charIdx > 0 {
+                    if counterManager.count > 0 {
                         playVibrate()
-                        charIdx -= 1
-                        // SoundSetting.instance.playSound()
+                        counterManager.decreaseCount()
                     }
                 } label: {
                     Image(systemName: "arrowshape.left.fill")
                         .resizable()
                         .scaledToFit()
-                        .padding()
+                        .padding(30)
                         .foregroundColor(.black)
                         .frame(width: 150, height: 150)
                 }
@@ -74,7 +75,7 @@ struct DotView: View {
                                 Text("\(idx + 1)")
                                     .font(.largeTitle)
                                     .foregroundColor(.black)
-                                    .opacity(brl2DArr[charIdx][5 - idx] == 1 ? 1 : 0.2)
+                                    .opacity(brl2DArr[counterManager.count][5 - idx] == 1 ? 1 : 0.2)
                                     .frame(width: width, height: height)
                             }
                         }
@@ -89,10 +90,9 @@ struct DotView: View {
                     .onEnded { _ in
                         lastTouch = -1
                         // 한 글자를 다 읽었을 때 set 비우고 다음글자로 넘어감 오버플로우 해결
-                        if touchSet.count == 6  && charIdx < brl2DArr.count - 1 {
+                        if touchSet.count == 6  && counterManager.count < brl2DArr.count - 1 {
                             touchSet = []
-                            charIdx += 1
-                            // SoundSetting.instance.playSound()
+                            counterManager.increaseCount()
                         }
                         print(brl2DArr)
                     }
@@ -105,6 +105,7 @@ struct DotView: View {
                 }
             }
     }
+    
     /// 터치한 뷰갸 1일 경우, 진동
     func vibrateOnTouch(value: DragGesture.Value, geo: GeometryProxy) {
         /// 터치 좌표 저장 변수
@@ -113,13 +114,11 @@ struct DotView: View {
         let touchedIdx = BrailleManager.shared.getIdx(loc, geo: geo)
         touchSet.insert(touchedIdx)
         // 누른 인덱스에 해당하는 점자이진 배열값이 1이고, 손을 떼기 전 마지막 터치한 인덱스가 같지 않을 때 진동
-        if brl2DArr[charIdx][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
+        if brl2DArr[counterManager.count][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
             print("\(touchedIdx + 1) / 6")
             // 진동 구현 부분
             playVibrate()
-            // SoundSetting.instance.playSound()
         }
-        // lastTouch 업데이트
         lastTouch = touchedIdx
     }
 

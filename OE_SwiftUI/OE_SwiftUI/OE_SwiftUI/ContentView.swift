@@ -13,8 +13,9 @@ import Firebase
 import Network
 
 struct ContentView: View {
-    // ViewModelPhone 인스턴스를 생성
-    var model = ViewModelPhone()
+    
+    /// 워치 통신 매니저
+    @ObservedObject var counterManager = CounterManager.shared
     /// ML 모드 
     @State private var mode = DetectMode.ocr
     /// 이미지 피커를 보여줄지 여부를 결정하는 State
@@ -129,15 +130,16 @@ extension ContentView {
 // MARK: - 머신러닝
 
 extension ContentView {
+    
     func loadML() {
         print("loadML\n인터넷:\(isInternetConnected), 모드:\(mode)")
         // 인터넷 연결 되어있으면 서버ML 호출
         if isInternetConnected {
             let path = uploadImage2FB()
             print("경로: ",path)
-            getByPath(path: path)
         } else {
-            mode == .object ? edgeObjDetect() : edgeOCR()
+//            mode == .object ? edgeObjDetect() : edgeOCR()
+            edgeOCR()
         }
     }
     
@@ -166,9 +168,8 @@ extension ContentView {
             // recognizedText 변수를 출력합니다.
             print("ocr 결과: \(recognizedText)")
             // 워치로 입력된 String 전송
-            messageText = recognizedText
-            sendMessage2Watch(messageText: messageText)
-            // uploadImage2FB()// 오프라인 상태에서는 파이어베이스에 업로드 하지 않음
+            messageText = recognizedText + " "
+            counterManager.sendMessage2Watch(messageText: messageText)
         })
         // 텍스트 인식 정확도를 설정
         request.recognitionLevel = .accurate
@@ -231,8 +232,8 @@ extension ContentView {
                                 getReqError = responseData.error
                                 getReqInfo = responseData.info
                                 getReqSummary = responseData.summary
-                                messageText = getReqSummary
-                                
+                                messageText = getReqInfo + " "
+                                counterManager.sendMessage2Watch(messageText: messageText)
                                 // 사용할 데이터를 처리하거나 UI에 반영하는 로직 추가
                                 // 예: DispatchQueue.main.async { ... }
                             } catch {
@@ -278,17 +279,6 @@ extension ContentView {
         }
         
         return imagePath
-    }
-}
-
-// MARK: - 폰 - 워치간 통신
-
-extension ContentView {
-    func sendMessage2Watch(messageText: String){
-        print("sendMessage2Watch")
-        self.model.session.sendMessage(["message": messageText], replyHandler: nil) { (error) in
-            print(error.localizedDescription)
-        }
     }
 }
 
