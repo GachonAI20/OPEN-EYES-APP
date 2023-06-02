@@ -13,7 +13,7 @@ struct DotView: View {
     /// 워치 통신 매니저
     @ObservedObject var counterManager = CounterManager.shared
     
-    let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+    let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
 
     /// 받은 일반 문자열 저장
      @Binding var str: String {
@@ -100,6 +100,7 @@ struct DotView: View {
                     }
                 )
             }
+            
         }
             .onReceive(Just(str)) { newValue in
                 if str != ""{

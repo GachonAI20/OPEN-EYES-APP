@@ -8,8 +8,14 @@
 import CoreML
 import SwiftUI
 import Vision
+import AVFoundation
 
 struct ContentView: View {
+    
+    /// 진동 구현 인스턴스
+    let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+    /// tts 인스턴스
+    let speechSynthesizer = AVSpeechSynthesizer()
     /// 워치 통신 매니저
     @ObservedObject var counterManager = CounterManager.shared
     /// ML 모드 
@@ -21,44 +27,59 @@ struct ContentView: View {
     ///   ML결과 저장하는 변수
     @State var messageText = ""
 
-
+    var longPressGesture: some Gesture {
+        LongPressGesture()
+            .onEnded { _ in
+                // 실행될 함수 호출
+                playTTS()
+            }
+    }
+    
     var body: some View {
         VStack{
-            Image("OpenEyes16_9")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 150)
-                .padding([.top ,.bottom],10)
-            
-            Text(messageText)
-                .foregroundColor(.black)
-            Spacer()
-
-            Button(action: {
-                // 이미지 피커 불러오기
-                showingImagePicker = true
-                print("이미지 피커 버튼")
-            }) {
-                if inputImage == nil{
-                    Image(uiImage: UIImage(systemName: "camera")!)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundColor(.black)
-                        .padding(20)
-                        .frame(width: 150, height: 150)
-                } else {
-                    Image(uiImage: inputImage!)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundColor(.black)
-                        .frame(width: 150, height: 150)
-
+            VStack {
+                ZStack {
+                    Color.white
+                    VStack{
+                        Image("OpenEyes16_9")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 150)
+                            .padding([.top ,.bottom],10)
+                        
+                        
+                        Text(messageText)
+                            .foregroundColor(.black)
+                        Spacer()
+                        
+                        Button(action: {
+                            // 이미지 피커 불러오기
+                            showingImagePicker = true
+                            print("이미지 피커 버튼")
+                        }) {
+                            if inputImage == nil{
+                                Image(uiImage: UIImage(systemName: "camera")!)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundColor(.black)
+                                    .padding(20)
+                                    .frame(width: 150, height: 150)
+                            } else {
+                                Image(uiImage: inputImage!)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .foregroundColor(.black)
+                                    .frame(width: 150, height: 150)
+                            }
+                        }
+                        Spacer()
+                    }
                 }
             }
+            .gesture(longPressGesture)
             
-            Spacer()
             DotView(str: $messageText)
-                .frame(height: 300)
+                .frame(height: 250)
             
             Spacer()
 
@@ -76,6 +97,9 @@ struct ContentView: View {
         .onAppear{
             show()
         }
+        .onShake {
+            showingImagePicker.toggle()
+        }
     }
 
     
@@ -83,17 +107,13 @@ struct ContentView: View {
 
 }
 
-// MARK: -  ContentView.onAppear
 extension ContentView {
+// MARK: -  ContentView.onAppear
     func show(){
         print("show")
     }
 
-}
-
 // MARK: - 머신러닝
-
-extension ContentView {
     func loadML() {
         print("loadML")
         edgeOCR()
@@ -139,6 +159,21 @@ extension ContentView {
         } catch {
             print(error)
         }
+    }
+    
+    // MARK: - 유틸리티
+
+    func playVibrate() {
+        impactFeedbackGenerator.impactOccurred()
+    }
+    
+    func playTTS() {
+        print("playTTS")
+        let utterance = AVSpeechUtterance(string: messageText)
+        utterance.voice = AVSpeechSynthesisVoice(language: "ko-KR") // 음성 언어 설정 (예: 한국어)
+        utterance.rate = 0.6 // 읽는 속도 설정 (0.0 ~ 1.0 사이 값)
+
+        speechSynthesizer.speak(utterance)
     }
 }
 

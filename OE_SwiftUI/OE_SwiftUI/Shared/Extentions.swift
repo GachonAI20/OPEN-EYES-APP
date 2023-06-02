@@ -7,6 +7,7 @@
 import SwiftUI
 import Foundation
 import CoreVideo
+import UIKit
 
 extension UIImage {
     func toCVPixelBuffer(width: Int = 299, height: Int = 299) -> CVPixelBuffer? {
@@ -48,3 +49,4 @@ extension String {
         return self[self.index(self.startIndex, offsetBy: index)]
     }
 }
+
