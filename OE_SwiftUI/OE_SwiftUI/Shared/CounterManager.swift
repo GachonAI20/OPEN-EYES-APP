@@ -53,6 +53,7 @@ final class CounterManager: ObservableObject {
     }
     
     func sendMessage2Watch(messageText: String) {
+        print("sendMessage2Watch, \(messageText)")
         session.sendMessage(["message": messageText], replyHandler: nil) { error in
             print(error.localizedDescription)
         }

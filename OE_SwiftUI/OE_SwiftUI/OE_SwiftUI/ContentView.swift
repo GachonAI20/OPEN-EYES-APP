@@ -15,6 +15,7 @@ import UIKit
 import Combine
 import AVFoundation
 import CoreMotion
+import KorToBraille
 
 struct ContentView: View {
     
@@ -39,6 +40,8 @@ struct ContentView: View {
     @State private var isInternetConnected: Bool = false
     ///   ML결과 저장하는 변수
     @State var messageText = ""
+    // 라벨에 표시하는 텍스트
+    @State var labelText = ""
 
     // get 요청 결과 저장
     @State var getReqError: String = ""
@@ -111,7 +114,7 @@ struct ContentView: View {
                             .pickerStyle(SegmentedPickerStyle())
                             .padding([.leading, .trailing],40)
                             
-                            Text(messageText)
+                            Text(labelText)
                                 .foregroundColor(.black)
                             
                             Spacer()
@@ -250,7 +253,7 @@ extension ContentView {
             // recognizedText 변수를 출력합니다.
             print("ocr 결과: \(recognizedText)")
             // 워치로 입력된 String 전송
-            messageText = recognizedText + " "
+            messageText = KorToBraille.korTranslate(recognizedText + " ")
             counterManager.sendMessage2Watch(messageText: messageText)
             playVibrate()
         })
@@ -315,7 +318,10 @@ extension ContentView {
                                 getReqError = responseData.error
                                 getReqInfo = responseData.info
                                 getReqSummary = responseData.summary
-                                messageText = getReqInfo + " "
+                                messageText = KorToBraille.korTranslate(getReqInfo + " ")
+//                                messageText = KorToBraille.korTranslate("Hello 안녕하세요 123!" + " ")
+                                print(messageText)
+                                // 한글만 점자로 바꿔놓은 String 보내서 나머지 영어는 BrailleManager에서 하도록 함
                                 counterManager.sendMessage2Watch(messageText: messageText)
                                 playVibrate()
                                 // 사용할 데이터를 처리하거나 UI에 반영하는 로직 추가

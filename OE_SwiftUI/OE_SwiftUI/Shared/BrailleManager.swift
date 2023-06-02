@@ -18,8 +18,9 @@ class BrailleManager {
     /// 처음 str이 바인딩 될때, str값이 변경될 때 두 번 호출됨
     func convert(str string: String) -> [[Int]]{
         print("convert")
+        var str: String
         /// 소문자로 저장된 일반 String
-        let str = string.lowercased()
+        str = string.lowercased()
         /// 반환할 배열, ["100011", "010010"]의 형식을 갖고있음
         var returnValue: [[Int]] = []
         /// [글자: 점자] 딕셔너리
@@ -85,10 +86,14 @@ class BrailleManager {
                 print(braille, terminator: "")
                 // 점자 문자에 해당하는 이진 숫자 배열을 반환할 배열에 추가
                 returnValue.append(braille2IntArr[braille]!)
+            } else {
+                print(char, terminator: "")
+                returnValue.append(braille2IntArr[char]!)
             }
         }
         print("")
         // 변환된 이진 숫자 2DArr을 반환
+        print(returnValue)
         return returnValue
     }
     
