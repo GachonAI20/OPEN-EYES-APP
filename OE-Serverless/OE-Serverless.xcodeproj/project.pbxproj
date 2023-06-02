@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2A4053522A292AFB00AB0083 /* SessionDelegater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A4053512A292AFB00AB0083 /* SessionDelegater.swift */; };
 		2A4053532A292AFB00AB0083 /* SessionDelegater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A4053512A292AFB00AB0083 /* SessionDelegater.swift */; };
+		2A4053602A2A021300AB0083 /* ShakeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A40535F2A2A021300AB0083 /* ShakeUtil.swift */; };
 		2A5ABCEC2A266B000078AEF2 /* OE_ServerlessApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5ABCEB2A266B000078AEF2 /* OE_ServerlessApp.swift */; };
 		2A5ABCEE2A266B000078AEF2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5ABCED2A266B000078AEF2 /* ContentView.swift */; };
 		2A5ABCF02A266B020078AEF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A5ABCEF2A266B020078AEF2 /* Assets.xcassets */; };
@@ -58,6 +59,7 @@
 
 /* Begin PBXFileReference section */
 		2A4053512A292AFB00AB0083 /* SessionDelegater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDelegater.swift; sourceTree = "<group>"; };
+		2A40535F2A2A021300AB0083 /* ShakeUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeUtil.swift; sourceTree = "<group>"; };
 		2A5ABCE82A266B000078AEF2 /* OE-Serverless.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OE-Serverless.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A5ABCEB2A266B000078AEF2 /* OE_ServerlessApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OE_ServerlessApp.swift; sourceTree = "<group>"; };
 		2A5ABCED2A266B000078AEF2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				2A5ABD222A266D230078AEF2 /* DotView.swift */,
+				2A40535F2A2A021300AB0083 /* ShakeUtil.swift */,
 				2A5ABCEB2A266B000078AEF2 /* OE_ServerlessApp.swift */,
 				2A5ABCED2A266B000078AEF2 /* ContentView.swift */,
 				2A5ABD0F2A266BAB0078AEF2 /* ImagePickerView.swift */,
@@ -273,6 +276,7 @@
 				2A4053522A292AFB00AB0083 /* SessionDelegater.swift in Sources */,
 				2A5ABD232A266D230078AEF2 /* DotView.swift in Sources */,
 				2A5ABD1E2A266BC30078AEF2 /* BrailleManager.swift in Sources */,
+				2A4053602A2A021300AB0083 /* ShakeUtil.swift in Sources */,
 				2A5ABD1A2A266BC30078AEF2 /* Extentions.swift in Sources */,
 				2A5ABD102A266BAB0078AEF2 /* ImagePickerView.swift in Sources */,
 				2A5ABCEC2A266B000078AEF2 /* OE_ServerlessApp.swift in Sources */,

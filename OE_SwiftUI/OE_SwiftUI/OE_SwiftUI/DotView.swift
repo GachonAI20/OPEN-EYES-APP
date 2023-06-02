@@ -43,9 +43,9 @@ struct DotView: View {
                     Image(systemName: "arrowshape.right.fill")
                         .resizable()
                         .scaledToFit()
-                        .padding([.leading, .trailing, .top], 15)
+                        .padding(30)
                         .foregroundColor(.black)
-                        .frame(width: 120, height: 120)
+                        .frame(width: 150, height: 150)
                 }
                 Button {
                     if counterManager.count > 0 {
@@ -56,12 +56,11 @@ struct DotView: View {
                     Image(systemName: "arrowshape.left.fill")
                         .resizable()
                         .scaledToFit()
-                        .padding([.leading, .trailing, .bottom],15)
+                        .padding(30)
                         .foregroundColor(.black)
-                        .frame(width: 120, height: 120)
+                        .frame(width: 150, height: 150)
                 }
             }
-            .padding([.trailing], 30)
             Spacer()
             GeometryReader { geo in
                 VStack{
@@ -101,10 +100,8 @@ struct DotView: View {
                     }
                 )
             }
-            .padding([.leading], 30)
             
         }
-            .padding(30)
             .onReceive(Just(str)) { newValue in
                 if str != ""{
                     brl2DArr = BrailleManager.shared.convert(str: newValue)

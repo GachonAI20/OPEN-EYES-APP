@@ -14,11 +14,17 @@ import Network
 import UIKit
 import Combine
 import AVFoundation
+import CoreMotion
 
 struct ContentView: View {
     
+    /// tts 인스턴스
+    let speechSynthesizer = AVSpeechSynthesizer()
     /// 진동 구현 인스턴스
     let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+    // 가속도계 인스턴스
+    private let motionManager = CMMotionManager()
+
     /// 워치 통신 매니저
     @ObservedObject var counterManager = CounterManager.shared
     /// ML 모드 
@@ -33,8 +39,7 @@ struct ContentView: View {
     @State private var isInternetConnected: Bool = false
     ///   ML결과 저장하는 변수
     @State var messageText = ""
-    /// tts 인스턴스
-    let speechSynthesizer = AVSpeechSynthesizer()
+
     // get 요청 결과 저장
     @State var getReqError: String = ""
     @State var getReqInfo: String = ""
@@ -129,7 +134,7 @@ struct ContentView: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .foregroundColor(.black)
-                                        .frame(width: 150, height: 150)   
+                                        .frame(width: 150, height: 150)
                                 }
                             }
                             
@@ -157,11 +162,14 @@ struct ContentView: View {
             // .sheet나 .fullScreenCover를 사용하면, 해당 뷰를 닫을 때 자동으로 isPresented와 연결된 변수 false로 설정
             .fullScreenCover(isPresented: $showingImagePicker, onDismiss: loadML) {
                 // 이미지 피커를 표시
-                ImagePickerView(selectedImage: self.$inputImage, sourceType: .photoLibrary)
+                ImagePickerView(selectedImage: self.$inputImage, sourceType: .camera)
             }
-            .onAppear{
+            .onAppear {
                 show()
-        }
+            }
+            .onShake {
+                showingImagePicker.toggle()
+            }
         }
     }
 

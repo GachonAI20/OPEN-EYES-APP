@@ -103,5 +103,6 @@ class BrailleManager {
         if returnValue < 0 { returnValue = 0 }
         if returnValue > 5 { returnValue = 5 }
         return returnValue
-    }    
+    }
+    
 }

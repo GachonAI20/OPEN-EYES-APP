@@ -97,6 +97,9 @@ struct ContentView: View {
         .onAppear{
             show()
         }
+        .onShake {
+            showingImagePicker.toggle()
+        }
     }
 
     
