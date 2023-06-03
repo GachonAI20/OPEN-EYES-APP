@@ -36,69 +36,74 @@ struct ContentView: View {
     }
     
     var body: some View {
-        VStack{
-            VStack {
-                ZStack {
-                    Color.white
-                    VStack{
-                        Image("OpenEyes16_9")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 150)
-                            .padding([.top ,.bottom],10)
-                        
-                        
-                        Text(messageText)
-                            .foregroundColor(.black)
-                        Spacer()
-                        
-                        Button(action: {
-                            // 이미지 피커 불러오기
-                            showingImagePicker = true
-                            print("이미지 피커 버튼")
-                        }) {
-                            if inputImage == nil{
-                                Image(uiImage: UIImage(systemName: "camera")!)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .foregroundColor(.black)
-                                    .padding(20)
-                                    .frame(width: 150, height: 150)
-                            } else {
-                                Image(uiImage: inputImage!)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .foregroundColor(.black)
-                                    .frame(width: 150, height: 150)
+        ZStack {
+            Color.white
+                .ignoresSafeArea()
+            VStack{
+                VStack {
+                    ZStack {
+                        Color.white
+                            .ignoresSafeArea()
+                        VStack{
+                            Image("OpenEyes16_9")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 150)
+                                .padding([.top ,.bottom],10)
+                            
+                            
+                            Text(messageText)
+                                .foregroundColor(.black)
+                            Spacer()
+                            
+                            Button(action: {
+                                // 이미지 피커 불러오기
+                                showingImagePicker = true
+                                print("이미지 피커 버튼")
+                            }) {
+                                if inputImage == nil{
+                                    Image(uiImage: UIImage(systemName: "camera")!)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .foregroundColor(.black)
+                                        .padding(20)
+                                        .frame(width: 150, height: 150)
+                                } else {
+                                    Image(uiImage: inputImage!)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .foregroundColor(.black)
+                                        .frame(width: 150, height: 150)
+                                }
                             }
+                            Spacer()
                         }
-                        Spacer()
                     }
                 }
+                .gesture(longPressGesture)
+                
+                DotView(str: $messageText)
+                    .frame(height: 250)
+                
+                Spacer()
+
             }
-            .gesture(longPressGesture)
-            
-            DotView(str: $messageText)
-                .frame(height: 250)
-            
-            Spacer()
+            .background(Color.white) // Set the background color to white
 
+            // .sheet를 .fullScreenCover로 변경
+            // present 여부를 $showingImagePicker로 결정함
+            // .sheet나 .fullScreenCover를 사용하면, 해당 뷰를 닫을 때 자동으로 isPresented와 연결된 변수 false로 설정
+            .fullScreenCover(isPresented: $showingImagePicker, onDismiss: loadML) {
+                // 이미지 피커를 표시
+                ImagePickerView(selectedImage: self.$inputImage, sourceType: .camera)
+                    .edgesIgnoringSafeArea(.all)
+            }
+            .onAppear{
+                show()
+            }
+            .onShake {
+                showingImagePicker.toggle()
         }
-        .background(Color.white) // Set the background color to white
-
-        // .sheet를 .fullScreenCover로 변경
-        // present 여부를 $showingImagePicker로 결정함
-        // .sheet나 .fullScreenCover를 사용하면, 해당 뷰를 닫을 때 자동으로 isPresented와 연결된 변수 false로 설정
-        .fullScreenCover(isPresented: $showingImagePicker, onDismiss: loadML) {
-            // 이미지 피커를 표시
-            ImagePickerView(selectedImage: self.$inputImage, sourceType: .camera)
-                .edgesIgnoringSafeArea(.all)
-        }
-        .onAppear{
-            show()
-        }
-        .onShake {
-            showingImagePicker.toggle()
         }
     }
 
