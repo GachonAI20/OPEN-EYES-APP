@@ -13,7 +13,7 @@ import AVFoundation
 struct ContentView: View {
     
     /// 진동 구현 인스턴스
-    let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+    let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
     /// tts 인스턴스
     let speechSynthesizer = AVSpeechSynthesizer()
     /// 워치 통신 매니저
