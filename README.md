@@ -1,12 +1,14 @@
 # OPEN-EYES
 
+![Image 1](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE1-6.5.jpeg) | ![Image 2](<[image2.jpg](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE1-6.5.jpeg)>) | ![Image 3](<[image3.jpg](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE1-6.5.jpeg)>)
+
 ## Intro
 
 OPEN EYES is an app designed to protect visually impaired individuals in situations where they rely on auditory perception to understand their surroundings. Instead of using the TTS (Text-to-Speech) feature on a smartphone, which can potentially block the important sensory input of hearing and lead to accidents, OPEN EYES offers an alternative solution.
 
 The app works by sending the visual information captured by the client's device to a server for object recognition and document scanning. The server then processes this information and converts it into a string of text. This text is subsequently translated into Braille, and the translation is conveyed to the client through vibrations on their Apple Watch.
 
-In this way, OPEN EYES enables visually impaired individuals to access visual information through the sense of touch, providing them with a safer and more inclusive experience."
+In this way, OPEN EYES enables visually impaired individuals to access visual information through the sense of touch, providing them with a safer and more inclusive experience.
 
 ## 설치
 
