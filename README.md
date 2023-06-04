@@ -1,6 +1,7 @@
 # OPEN-EYES
 
-![Image 1](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE1-6.5.jpeg) | ![Image 2](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE2-6.5.jpeg) | ![Image 3](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE3-6.5.jpeg)
+| ![image.jpg1](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE1-6.5.jpeg) | ![image.jpg2](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE3-6.5.jpeg) | ![image.jpg2](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE3-6.5.jpeg) |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
 
 ## Intro
 
