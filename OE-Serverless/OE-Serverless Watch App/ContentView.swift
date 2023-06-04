@@ -133,7 +133,7 @@ struct ContentView: View {
     
     func playVibrate() {
 //        WKInterfaceDevice.current().play(.success)// 약하게 뚜둑
-        WKInterfaceDevice.current().play(.click)// 약하게 뚜둑
+        WKInterfaceDevice.current().play(.start)// 약하게 뚜둑
     }
 }
 
