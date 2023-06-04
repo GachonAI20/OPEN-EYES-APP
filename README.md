@@ -1,7 +1,10 @@
 # OPEN-EYES
 
-| ![image.jpg1](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE1-6.5.jpeg) | ![image.jpg2](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE3-6.5.jpeg) | ![image.jpg2](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE3-6.5.jpeg) |
-| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| ![phone1](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE1-6.5.jpeg) | ![phone2](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE2-6.5.jpeg) | ![phone3](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE3-6.5.jpeg) |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+
+| ![watch1](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/watch1.png) | ![watch2](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/watch2.png) | ![watch3](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/watch3.png) |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
 
 ## Intro
 
@@ -11,18 +14,18 @@ The app works by sending the visual information captured by the client's device 
 
 In this way, OPEN EYES enables visually impaired individuals to access visual information through the sense of touch, providing them with a safer and more inclusive experience.
 
-## 설치
+## Installation
 
-앱스토어에서 OPEN-EYES 검색 후 설치
+Search for OPEN-EYES in the App Store and install it.
 
-## 기본 설정
+## Basic Configuration
 
-[애플워치 손쉬운 사용으로 앱 열기 단축어](https://www.icloud.com/shortcuts/8b58e7f1a03349e6ac8227780984804e)  
-[단축어 다운로드가 안될 경우](https://wealthy-wasabi-c41.notion.site/b10e5a2f0d344b77ac50849c9e3f6611)
+[Shortcut to Open the App with Easy Accessibility on Apple Watch](https://www.icloud.com/shortcuts/8b58e7f1a03349e6ac8227780984804e)  
+[If the Shortcut Download Doesn't Work](https://wealthy-wasabi-c41.notion.site/b10e5a2f0d344b77ac50849c9e3f6611)
 
-## 사용 라이브러리
+## Used Libraries
 
-- [SwiftUI](https://developer.apple.com/kr/xcode/swiftui/)
-- [CoreML](https://developer.apple.com/kr/machine-learning/core-ml/)
-- [Watch Connectivity](https://developer.apple.com/documentation/watchconnectivity)
+- [SwiftUI](https://developer.apple.com/documentation/swiftui/)
+- [CoreML](https://developer.apple.com/documentation/coreml/)
+- [Watch Connectivity](https://developer.apple.com/documentation/watchconnectivity/)
 - [KorToBraille](https://github.com/Bridge-NOONGIL/KorToBraille)
