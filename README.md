@@ -1,10 +1,12 @@
 # OPEN-EYES
 
-iPhone
+## iPhone
+
 | ![phone1](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE1-6.5.jpeg) | ![phone2](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE2-6.5.jpeg) | ![phone3](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE3-6.5.jpeg) |
 | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 
-Apple Watch  
+## Apple Watch
+
 | ![watch1](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/watch1.png) | ![watch2](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/watch2.png) | ![watch3](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/watch3.png) |
 | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
 
