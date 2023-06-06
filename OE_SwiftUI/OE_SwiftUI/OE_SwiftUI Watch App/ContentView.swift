@@ -62,7 +62,7 @@ struct ContentView: View {
                     // 한 글자를 다 읽었을 때 set 비우고 다음글자로 넘어감 오버플로우 해결
                     if touchSet.count == 6  && counterManager.count < brl2DArr.count - 1 {
                         touchSet = []
-                        counterManager.increaseCount()
+                        counterManager.increaseCount(withMessage: str)
                         //                        SoundSetting.instance.playSound()
                     }
                 }
@@ -90,7 +90,7 @@ struct ContentView: View {
                     lastCrown = crownValue
                     if counterManager.count < brl2DArr.count - 1 {
                         playVibrate()
-                        counterManager.increaseCount()
+                        counterManager.increaseCount(withMessage: str)
                         // 크라운 돌아감 표시
                         isCrownRotated = true
                     }
@@ -99,7 +99,7 @@ struct ContentView: View {
                     lastCrown = crownValue
                     if counterManager.count > 0 {
                         playVibrate()
-                        counterManager.decreaseCount()
+                        counterManager.decreaseCount(withMessage: str)
                         // 크라운 돌아감 표시
                         isCrownRotated = true
                     }

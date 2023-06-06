@@ -40,6 +40,8 @@ struct ContentView: View {
     @State private var isInternetConnected: Bool = false
     ///   ML결과 저장하는 변수
     @State var messageText = ""
+    /// 전체 문장
+    @State var originalText = ""
     // 라벨에 표시하는 텍스트
     @State var labelText = ""
 
@@ -287,7 +289,7 @@ extension ContentView {
 //    }
     
     func getByPath(path: String) {
-        var urlComponents = URLComponents(string: "https://port-0-flask-test1-4c7jj2blhexg5l8.sel4.cloudtype.app/")
+        var urlComponents = URLComponents(string: "http://172.16.237.6:3030")
         urlComponents?.queryItems = [URLQueryItem(name: "id", value: path)]
         
         if let url = urlComponents?.url {
@@ -319,6 +321,7 @@ extension ContentView {
                                 getReqInfo = responseData.info
                                 getReqSummary = responseData.summary
                                 messageText = KorToBraille.korTranslate(getReqInfo + " ")
+                                originalText = getReqInfo
 //                                messageText = KorToBraille.korTranslate("Hello 안녕하세요 123!" + " ")
                                 print(messageText)
                                 // 한글만 점자로 바꿔놓은 String 보내서 나머지 영어는 BrailleManager에서 하도록 함
@@ -379,7 +382,7 @@ extension ContentView {
     
     func playTTS() {
         print("playTTS")
-        let utterance = AVSpeechUtterance(string: messageText)
+        let utterance = AVSpeechUtterance(string: originalText)
         utterance.voice = AVSpeechSynthesisVoice(language: "ko-KR") // 음성 언어 설정 (예: 한국어)
         utterance.rate = 0.6 // 읽는 속도 설정 (0.0 ~ 1.0 사이 값)
 

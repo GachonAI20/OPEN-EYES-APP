@@ -31,19 +31,21 @@ final class CounterManager: ObservableObject {
             .assign(to: &$message)
     }
     
-    func increaseCount() {
+    func increaseCount(withMessage messageText: String) {
         count += 1
-        session.sendMessage(["count": count], replyHandler: nil) { error in
+        session.sendMessage(["count": count, "message": messageText], replyHandler: nil) { error in
             print(error.localizedDescription)
         }
     }
+
     
-    func decreaseCount() {
+    func decreaseCount(withMessage messageText: String) {
         count -= 1
-        session.sendMessage(["count": count], replyHandler: nil) { error in
+        session.sendMessage(["count": count, "message": messageText], replyHandler: nil) { error in
             print(error.localizedDescription)
         }
     }
+
     
     func setCountZero() {
         count  = 0
