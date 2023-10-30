@@ -2,7 +2,7 @@
 
 ### Presentation
 
-[![Presentation_video](presentation_thumbnail.jpg)](https://youtu.be/YORpgvFTvq0?si=bonLfO1YvJ70FhfE)
+[![Presentation_video](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/presentation_thumbnail.jpg)](https://youtu.be/YORpgvFTvq0?si=bonLfO1YvJ70FhfE)
 
 ## iPhone
 
