@@ -31,6 +31,10 @@
 		2A5ABD232A266D230078AEF2 /* DotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5ABD222A266D230078AEF2 /* DotView.swift */; };
 		2A5ABD9B2A2917F00078AEF2 /* CounterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5ABD992A2917F00078AEF2 /* CounterManager.swift */; };
 		2A5ABD9C2A2917F00078AEF2 /* CounterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5ABD992A2917F00078AEF2 /* CounterManager.swift */; };
+		2A615FAF2A3526A70071ADC6 /* sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A615FAE2A3526A70071ADC6 /* sound.swift */; };
+		2A615FB02A3526A70071ADC6 /* sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A615FAE2A3526A70071ADC6 /* sound.swift */; };
+		2A615FB42A35273C0071ADC6 /* vibration.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2A615FB32A35273C0071ADC6 /* vibration.m4a */; };
+		2A615FB52A35273C0071ADC6 /* vibration.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 2A615FB32A35273C0071ADC6 /* vibration.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +81,8 @@
 		2A5ABD192A266BC30078AEF2 /* ResponseData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseData.swift; sourceTree = "<group>"; };
 		2A5ABD222A266D230078AEF2 /* DotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotView.swift; sourceTree = "<group>"; };
 		2A5ABD992A2917F00078AEF2 /* CounterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CounterManager.swift; sourceTree = "<group>"; };
+		2A615FAE2A3526A70071ADC6 /* sound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sound.swift; sourceTree = "<group>"; };
+		2A615FB32A35273C0071ADC6 /* vibration.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = vibration.m4a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +106,7 @@
 		2A5ABCDF2A266AFF0078AEF2 = {
 			isa = PBXGroup;
 			children = (
+				2A615FB22A3527340071ADC6 /* Resources */,
 				2A5ABD152A266BC30078AEF2 /* Shared */,
 				2A5ABCEA2A266B000078AEF2 /* OE-Serverless */,
 				2A5ABCFC2A266B020078AEF2 /* OE-Serverless Watch App */,
@@ -152,6 +159,7 @@
 		2A5ABD032A266B020078AEF2 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				2A615FB12A35272A0071ADC6 /* Resources */,
 				2A5ABD042A266B020078AEF2 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
@@ -162,12 +170,30 @@
 			children = (
 				2A5ABD992A2917F00078AEF2 /* CounterManager.swift */,
 				2A5ABD162A266BC30078AEF2 /* Extentions.swift */,
+				2A615FAE2A3526A70071ADC6 /* sound.swift */,
 				2A5ABD172A266BC30078AEF2 /* DetectMode.swift */,
 				2A4053512A292AFB00AB0083 /* SessionDelegater.swift */,
 				2A5ABD182A266BC30078AEF2 /* BrailleManager.swift */,
 				2A5ABD192A266BC30078AEF2 /* ResponseData.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		2A615FB12A35272A0071ADC6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			path = ../../../OE_SwiftUI/OE_SwiftUI/Resources;
+			sourceTree = "<group>";
+		};
+		2A615FB22A3527340071ADC6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2A615FB32A35273C0071ADC6 /* vibration.m4a */,
+			);
+			name = Resources;
+			path = ../OE_SwiftUI/OE_SwiftUI/Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,6 +279,7 @@
 			files = (
 				2A5ABCF32A266B020078AEF2 /* Preview Assets.xcassets in Resources */,
 				2A5ABCF02A266B020078AEF2 /* Assets.xcassets in Resources */,
+				2A615FB42A35273C0071ADC6 /* vibration.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,6 +289,7 @@
 			files = (
 				2A5ABD052A266B020078AEF2 /* Preview Assets.xcassets in Resources */,
 				2A5ABD022A266B020078AEF2 /* Assets.xcassets in Resources */,
+				2A615FB52A35273C0071ADC6 /* vibration.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +311,7 @@
 				2A5ABD202A266BC30078AEF2 /* ResponseData.swift in Sources */,
 				2A5ABD9B2A2917F00078AEF2 /* CounterManager.swift in Sources */,
 				2A5ABD1C2A266BC30078AEF2 /* DetectMode.swift in Sources */,
+				2A615FAF2A3526A70071ADC6 /* sound.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +324,7 @@
 				2A5ABD212A266BC30078AEF2 /* ResponseData.swift in Sources */,
 				2A5ABD9C2A2917F00078AEF2 /* CounterManager.swift in Sources */,
 				2A5ABD1F2A266BC30078AEF2 /* BrailleManager.swift in Sources */,
+				2A615FB02A3526A70071ADC6 /* sound.swift in Sources */,
 				2A5ABD1D2A266BC30078AEF2 /* DetectMode.swift in Sources */,
 				2A5ABD002A266B020078AEF2 /* ContentView.swift in Sources */,
 				2A5ABCFE2A266B020078AEF2 /* OE_ServerlessApp.swift in Sources */,

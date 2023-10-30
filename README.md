@@ -1,5 +1,9 @@
 # OPEN-EYES
 
+### Presentation
+
+[![Presentation_video](presentation_thumbnail.jpg)](https://youtu.be/YORpgvFTvq0?si=bonLfO1YvJ70FhfE)
+
 ## iPhone
 
 | ![phone1](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE1-6.5.jpeg) | ![phone2](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE2-6.5.jpeg) | ![phone3](https://github.com/JDeoks/OPEN-EYES/blob/main/Images/OE3-6.5.jpeg) |
@@ -26,7 +30,7 @@ In this way, OPEN EYES enables visually impaired individuals to access visual in
 
 ## Installation
 
-Search for OPEN-EYES in the App Store and install it.
+Search for [OPEN-EYES](https://apps.apple.com/kr/app/open-eyes/id6449876591) in the App Store and install it.
 
 ## Basic Configuration
 

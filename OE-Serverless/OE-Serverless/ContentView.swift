@@ -51,7 +51,15 @@ struct ContentView: View {
                                 .frame(height: 150)
                                 .padding([.top ,.bottom],10)
                             
-                            
+                            Picker(selection: $mode, label: Text("모드선택")) {
+                                Text("문서 인식")
+                                    .tag(DetectMode.ocr)
+                                Text("물체 인식")
+                                    .tag(DetectMode.object)
+
+                            }
+                            .pickerStyle(SegmentedPickerStyle())
+                            .padding([.leading, .trailing],40)
                             Text(messageText)
                                 .foregroundColor(.black)
                             Spacer()
