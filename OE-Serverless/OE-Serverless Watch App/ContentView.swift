@@ -124,6 +124,7 @@ struct ContentView: View {
         if brl2DArr[counterManager.count][5 - touchedIdx] == 1 && lastTouch != touchedIdx {
             print("\(touchedIdx + 1) / 6")
             // 진동 구현 부분
+            
             playVibrate()
             // SoundSetting.instance.playSound()
         }
@@ -132,8 +133,8 @@ struct ContentView: View {
     }
     
     func playVibrate() {
-//        WKInterfaceDevice.current().play(.success)// 약하게 뚜둑
-        WKInterfaceDevice.current().play(.start)// 약하게 뚜둑
+        WKInterfaceDevice.current().play(.ㅇ)// 약하게 뚜둑
+//        SoundSetting.instance.playSound()
     }
 }
 

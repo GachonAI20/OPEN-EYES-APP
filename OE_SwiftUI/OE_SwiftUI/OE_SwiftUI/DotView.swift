@@ -37,8 +37,9 @@ struct DotView: View {
                 Button {
                     if counterManager.count < brl2DArr.count - 1 {
                         playVibrate()
-                        counterManager.increaseCount()
+                        counterManager.increaseCount(withMessage: str)
                     }
+                    counterManager.sendMessage2Watch(messageText: str)
                 } label: {
                     Image(systemName: "arrowshape.right.fill")
                         .resizable()
@@ -50,8 +51,10 @@ struct DotView: View {
                 Button {
                     if counterManager.count > 0 {
                         playVibrate()
-                        counterManager.decreaseCount()
+                        counterManager.decreaseCount(withMessage: str)
+
                     }
+                    counterManager.sendMessage2Watch(messageText: str)
                 } label: {
                     Image(systemName: "arrowshape.left.fill")
                         .resizable()
@@ -94,7 +97,7 @@ struct DotView: View {
                         // 한 글자를 다 읽었을 때 set 비우고 다음글자로 넘어감 오버플로우 해결
                         if touchSet.count == 6  && counterManager.count < brl2DArr.count - 1 {
                             touchSet = []
-                            counterManager.increaseCount()
+                            counterManager.increaseCount(withMessage: str)
                         }
                         print(brl2DArr)
                     }

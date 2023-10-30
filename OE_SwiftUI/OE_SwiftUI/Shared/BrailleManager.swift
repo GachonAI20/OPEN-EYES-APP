@@ -87,8 +87,10 @@ class BrailleManager {
                 // 점자 문자에 해당하는 이진 숫자 배열을 반환할 배열에 추가
                 returnValue.append(braille2IntArr[braille]!)
             } else {
-                print(char, terminator: "")
-                returnValue.append(braille2IntArr[char]!)
+                if braille2IntArr[char] != nil{
+                    print(char, terminator: "")
+                    returnValue.append(braille2IntArr[char]!)
+                }
             }
         }
         print("")
